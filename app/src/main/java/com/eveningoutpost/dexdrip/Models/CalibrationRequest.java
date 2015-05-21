@@ -58,10 +58,6 @@ public class CalibrationRequest extends Model {
                 .where("requestIfAbove < ?", bgReading.calculated_value)
                 .where("requestIfBelow > ?", bgReading.calculated_value)
                 .executeSingle();
-        if (calibrationRequest != null && Math.abs(bgReading.calculated_value_slope * 60000) < 1.8) {
-            return true;
-        } else {
-            return false;
-        }
+        return calibrationRequest != null && Math.abs(bgReading.calculated_value_slope * 60000) < 1.8;
     }
 }

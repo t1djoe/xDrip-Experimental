@@ -181,10 +181,7 @@ public class AlertType extends Model {
 
     // returns true, if one allert is up and the second is down
     public static boolean OpositeDirection(AlertType a1, AlertType a2) {
-        if (a1.above != a2.above) {
-            return true;
-        }
-        return false;
+        return a1.above != a2.above;
     }
 
     // Checks if a1 is more important than a2. returns the higher one
@@ -428,11 +425,7 @@ public class AlertType extends Model {
 
     public boolean should_alarm(double bg) {
 //        Log.e(TAG, "should_alarm called active =  " + active );
-        if(in_time_frame() && active && (beyond_threshold(bg) || trending_to_threshold(bg))) {
-            return true;
-        } else {
-            return false;
-        }
+        return in_time_frame() && active && (beyond_threshold(bg) || trending_to_threshold(bg));
     }
 
     public static void testAlert(

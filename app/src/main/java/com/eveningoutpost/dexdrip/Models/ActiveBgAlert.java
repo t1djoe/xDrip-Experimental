@@ -18,9 +18,9 @@ import java.util.Date;
  */
 @Table(name = "ActiveBgAlert", id = BaseColumns._ID)
 public class ActiveBgAlert extends Model {
-    
+
     private final static String TAG = AlertPlayer.class.getSimpleName();
-    
+
     @Column(name = "alert_uuid")
     public String alert_uuid;
 
@@ -34,31 +34,28 @@ public class ActiveBgAlert extends Model {
     public Long next_alert_at;
 
     public boolean ready_to_alarm() {
-        if(new Date().getTime() > next_alert_at) {
-            return true;
-        }
-        return false;
+        return new Date().getTime() > next_alert_at;
     }
 
     public void snooze(int minutes) {
         next_alert_at = new Date().getTime() + minutes * 60000;
         save();
     }
-    
+
     public String toString() {
-        
+
         String alert_uuid = "alert_uuid: " + this.alert_uuid;
         String is_snoozed = "is_snoozed: " + this.is_snoozed;
         String last_alerted_at = "last_alerted_at: " + DateFormat.getDateTimeInstance(
                 DateFormat.LONG, DateFormat.LONG).format(new Date(this.last_alerted_at));
         String next_alert_at = "next_alert_at: " + DateFormat.getDateTimeInstance(
-                DateFormat.LONG, DateFormat.LONG).format(new Date(this.next_alert_at)); 
+                DateFormat.LONG, DateFormat.LONG).format(new Date(this.next_alert_at));
 
         return alert_uuid + " " + is_snoozed + " " + last_alerted_at + " "+ next_alert_at;
-        
-        
+
+
     }
-    
+
     // We should only have at most one active alert at any given time.
     // This means that we will only have one of this objects at the database at any given time.
     // so we have the following static functions: getOnly, saveData, ClearData
@@ -68,24 +65,24 @@ public class ActiveBgAlert extends Model {
                 .from(ActiveBgAlert.class)
                 .orderBy("_ID asc")
                 .executeSingle();
-        
+
         if (aba != null) {
             Log.v(TAG, "ActiveBgAlert getOnly aba = " + aba.toString());
         } else {
             Log.v(TAG, "ActiveBgAlert getOnly returning null");
         }
-        
+
         return aba;
     }
-    
+
     public static AlertType alertTypegetOnly() {
         ActiveBgAlert aba = getOnly();
-        
+
         if (aba == null) {
             Log.v(TAG, "ActiveBgAlert: alertTypegetOnly returning null");
             return null;
         }
-        
+
         AlertType alert = AlertType.get_alert(aba.alert_uuid);
         if(alert == null) {
             Log.e(TAG, "alertTypegetOnly did not find the active alert as part of existing alerts. returning null");
@@ -98,7 +95,7 @@ public class ActiveBgAlert extends Model {
         }
         return alert;
     }
-    
+
     public static void Create(String alert_uuid, boolean is_snoozed, Long next_alert_at) {
         Log.e(TAG, "ActiveBgAlert Create called");
         ActiveBgAlert aba = getOnly();
@@ -111,7 +108,7 @@ public class ActiveBgAlert extends Model {
         aba.next_alert_at = next_alert_at;
         aba.save();
     }
-    
+
     public static void ClearData() {
         Log.e(TAG, "ActiveBgAlert ClearData called");
         ActiveBgAlert aba = getOnly();
@@ -119,7 +116,7 @@ public class ActiveBgAlert extends Model {
             aba.delete();
         }
     }
-    
+
     public static void ClearIfSnoozeFinished() {
         Log.e(TAG, "ActiveBgAlert ClearIfSnoozeFinished called");
         ActiveBgAlert aba = getOnly();
@@ -130,8 +127,8 @@ public class ActiveBgAlert extends Model {
             }
         }
     }
-    
-    
-        
+
+
+
 }
 

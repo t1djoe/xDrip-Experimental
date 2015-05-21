@@ -73,10 +73,7 @@ public class WixelReader  extends Thread {
     public static boolean IsConfigured(Context ctx) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
         String recieversIpAddresses = prefs.getString("wifi_recievers_addresses", "");
-        if(recieversIpAddresses == null || recieversIpAddresses.equals("") ) {
-            return false;
-        }
-        return true;
+        return !(recieversIpAddresses == null || recieversIpAddresses.equals(""));
     }
 
     public static boolean almostEquals( TransmitterRawData e1, TransmitterRawData e2)
@@ -85,11 +82,8 @@ public class WixelReader  extends Thread {
             return false;
         }
         // relative time is in ms
-        if ((Math.abs(e1.CaptureDateTime - e2.CaptureDateTime) < 120 * 1000 ) &&
-                (e1.TransmissionId == e2.TransmissionId)) {
-            return true;
-        }
-        return false;
+        return (Math.abs(e1.CaptureDateTime - e2.CaptureDateTime) < 120 * 1000) &&
+                (e1.TransmissionId == e2.TransmissionId);
     }
 
  // last in the array, is first in time

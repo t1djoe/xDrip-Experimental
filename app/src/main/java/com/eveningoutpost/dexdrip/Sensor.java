@@ -63,11 +63,7 @@ public class Sensor extends Model {
                 .orderBy("_ID desc")
                 .limit(1)
                 .executeSingle();
-        if(sensor == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return sensor != null;
     }
 }
 

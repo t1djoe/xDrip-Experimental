@@ -58,8 +58,7 @@ public class Preferences extends PreferenceActivity {
 
     @Override
     protected boolean isValidFragment(String fragmentName) {
-        if (AllPrefsFragment.class.getName().equals(fragmentName)){ return true; }
-        return false;
+        return AllPrefsFragment.class.getName().equals(fragmentName);
     }
 
     @Override

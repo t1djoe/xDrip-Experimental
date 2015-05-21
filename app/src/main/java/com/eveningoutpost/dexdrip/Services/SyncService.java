@@ -67,7 +67,7 @@ public class SyncService extends IntentService {
     public void setRetryTimer() {
         Calendar calendar = Calendar.getInstance();
         AlarmManager alarm = (AlarmManager)getSystemService(ALARM_SERVICE);
-        alarm.set(alarm.RTC_WAKEUP, calendar.getTimeInMillis() + (1000 * 30 * 5), PendingIntent.getService(this, 0, new Intent(this, SyncService.class), 0));
+        alarm.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + (1000 * 30 * 5), PendingIntent.getService(this, 0, new Intent(this, SyncService.class), 0));
     }
 
     public void syncToMogoDb() {

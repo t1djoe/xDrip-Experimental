@@ -682,10 +682,7 @@ public class BgReading extends Model {
     // Should that be combined with noiseValue?
     private Boolean Unclear() {
         Log.e(TAG_ALERT, "Unclear filtered_data=" + filtered_data + " raw_data=" + raw_data);
-        if (raw_data > filtered_data * 1.3 || raw_data < filtered_data * 0.7) {
-            return true;
-        }
-        return false;
+        return raw_data > filtered_data * 1.3 || raw_data < filtered_data * 0.7;
     }
 
     /*

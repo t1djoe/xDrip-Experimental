@@ -371,7 +371,6 @@ public class EditAlertActivity extends Activity {
                     return;
                 }
                 boolean overrideSilentMode = checkboxAlertOverride.isChecked();
-;
                 String mp3_file = audioPath;
                 if (uuid != null) {
                     AlertType.update_alert(uuid, alertText.getText().toString(), above, threshold, allDay, 1, mp3_file, timeStart, timeEnd, overrideSilentMode, defaultSnooze);

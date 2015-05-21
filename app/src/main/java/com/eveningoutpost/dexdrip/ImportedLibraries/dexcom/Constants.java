@@ -143,7 +143,7 @@ public class Constants {
 
         private String name;
         private int val;
-        private SPECIALBGVALUES_MGDL(String s, int i){
+        SPECIALBGVALUES_MGDL(String s, int i){
             name=s;
             val=i;
         }
@@ -199,7 +199,7 @@ public class Constants {
 
         private final int value;
 
-        private NOISE(int value) {
+        NOISE(int value) {
             this.value = value;
         }
 

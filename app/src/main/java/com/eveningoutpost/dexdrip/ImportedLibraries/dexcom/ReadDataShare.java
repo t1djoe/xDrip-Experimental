@@ -309,6 +309,6 @@ public class ReadDataShare {
                 break;
         }
         Observable.just((T) null).subscribe(parsedPageReceiver);
-        return (T) null;
+        return null;
     }
 }

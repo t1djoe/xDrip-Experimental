@@ -25,34 +25,22 @@ public class CollectionServiceStarter {
     public static boolean isBTWixel(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String collection_method = prefs.getString("dex_collection_method", "BluetoothWixel");
-        if(collection_method.compareTo("BluetoothWixel") == 0) {
-            return true;
-        }
-        return false;
+        return collection_method.compareTo("BluetoothWixel") == 0;
     }
     public static boolean isDexbridgeWixel(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String collection_method = prefs.getString("dex_collection_method", "DexbridgeWixel");
-        if(collection_method.compareTo("DexbridgeWixel") == 0) {
-            return true;
-        }
-        return false;
+        return collection_method.compareTo("DexbridgeWixel") == 0;
     }
     public static boolean isBTShare(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String collection_method = prefs.getString("dex_collection_method", "BluetoothWixel");
-        if(collection_method.compareTo("DexcomShare") == 0) {
-            return true;
-        }
-        return false;
+        return collection_method.compareTo("DexcomShare") == 0;
     }
     public static boolean isWifiWixel(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String collection_method = prefs.getString("dex_collection_method", "BluetoothWixel");
-        if(collection_method.compareTo("WifiWixel") == 0) {
-            return true;
-        }
-        return false;
+        return collection_method.compareTo("WifiWixel") == 0;
     }
     public static void newStart(Context context) {
         CollectionServiceStarter collectionServiceStarter = new CollectionServiceStarter(context);

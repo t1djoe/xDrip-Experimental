@@ -70,7 +70,7 @@ public class BgSendQueue extends Model {
     }
 
     public static void addToQueue(BgReading bgReading, String operation_type, Context context) {
-        PowerManager powerManager = (PowerManager) context.getSystemService(context.POWER_SERVICE);
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 "sendQueue");
         wakeLock.acquire();

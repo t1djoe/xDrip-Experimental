@@ -348,6 +348,6 @@ public class ReadData {
                 break;
         }
 
-        return (T) null;
+        return null;
     }
 }
