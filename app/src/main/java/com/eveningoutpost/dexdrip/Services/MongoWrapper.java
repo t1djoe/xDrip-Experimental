@@ -1,5 +1,4 @@
 package com.eveningoutpost.dexdrip.Services;
-import java.io.IOException;
 import java.net.UnknownHostException;
 
 import android.util.Log;
@@ -8,7 +7,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.MongoClientURI;
@@ -16,16 +14,15 @@ import com.mongodb.MongoClientURI;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-public class MongoWrapper {
+class MongoWrapper {
 
-	MongoClient mongoClient_;
-	String dbUriStr_;
-	String dbName_;
-	String collection_;
-	String index_;
-	String machineName_;
+	private MongoClient mongoClient_;
+	private String dbUriStr_;
+	private String dbName_;
+	private String collection_;
+	private String index_;
+	private String machineName_;
 	private final static String TAG = WixelReader.class.getName();
 
 	public MongoWrapper(String dbUriStr, String collection, String index, String machineName) {
@@ -38,7 +35,7 @@ public class MongoWrapper {
 	}
 
 	// Unfortunately, this also throws other exceptions that are not documetned...
-    public DBCollection openMongoDb() throws UnknownHostException {
+	private DBCollection openMongoDb() throws UnknownHostException {
 
     	MongoClientURI dbUri = new MongoClientURI(dbUriStr_); //?? thros
 	    mongoClient_ = new MongoClient(dbUri);
@@ -51,7 +48,7 @@ public class MongoWrapper {
 
     }
 
-     public void closeMongoDb() {
+     private void closeMongoDb() {
          if(mongoClient_ != null) {
     	 	mongoClient_.close();
          }
@@ -71,7 +68,7 @@ public class MongoWrapper {
     	 return WriteToMongo(bdbo);
      }
 
-     public boolean WriteToMongo(BasicDBObject bdbo)
+     private boolean WriteToMongo(BasicDBObject bdbo)
      {
      	DBCollection coll;
      	try {

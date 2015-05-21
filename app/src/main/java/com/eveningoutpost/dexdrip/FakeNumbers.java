@@ -1,12 +1,8 @@
 package com.eveningoutpost.dexdrip;
 
-import java.util.Date;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,7 +16,7 @@ import com.eveningoutpost.dexdrip.Models.BgReading;
 import java.util.Date;
 
 public class FakeNumbers extends Activity {
-    public Button button;
+    private Button button;
     public DatePicker dp;
     public TimePicker tp;
     @Override
@@ -33,7 +29,7 @@ public class FakeNumbers extends Activity {
 
     }
 
-    public void addListenerOnButton() {
+    private void addListenerOnButton() {
 
         button = (Button)findViewById(R.id.log);
 
@@ -53,24 +49,24 @@ public class FakeNumbers extends Activity {
             }
 
         });
-        
+
         button = (Button)findViewById(R.id.StartTest);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ActiveBgAlert aba = ActiveBgAlert.getOnly();
                 ActiveBgAlert.ClearData();
                 ActiveBgAlert.Create("some string", true, new Date().getTime());
-                
-                
+
+
             }
         });
-        
+
         button = (Button)findViewById(R.id.StartTestAlerts);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AlertType.testAll(getApplicationContext());
                 BgReading.TestgetUnclearTimes();
-                
+
             }
         });
     }

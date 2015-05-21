@@ -3,10 +3,8 @@ package com.eveningoutpost.dexdrip;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 
-import com.eveningoutpost.dexdrip.Models.ActiveBgAlert;
 import com.eveningoutpost.dexdrip.Models.BgReading;
 import com.eveningoutpost.dexdrip.Models.Calibration;
 import com.eveningoutpost.dexdrip.Tables.BgReadingTable;
@@ -22,14 +20,14 @@ import java.util.List;
  * Created by stephenblack on 11/5/14.
  */
 public class NavDrawerBuilder {
-    public final List<Calibration> last_two_calibrations = Calibration.latest(2);
-    public final List<BgReading> last_two_bgReadings = BgReading.latestUnCalculated(2);
-    public final List<BgReading> bGreadings_in_last_30_mins = BgReading.last30Minutes();
-    public final boolean is_active_sensor = Sensor.isActive();
-    public final double time_now = new Date().getTime();
+    private final List<Calibration> last_two_calibrations = Calibration.latest(2);
+    private final List<BgReading> last_two_bgReadings = BgReading.latestUnCalculated(2);
+    private final List<BgReading> bGreadings_in_last_30_mins = BgReading.last30Minutes();
+    private final boolean is_active_sensor = Sensor.isActive();
+    private final double time_now = new Date().getTime();
     public List<Intent> nav_drawer_intents;
     public List<String> nav_drawer_options;
-    public Context context;
+    private Context context;
 
     public NavDrawerBuilder(Context aContext) {
         context = aContext;
@@ -38,11 +36,11 @@ public class NavDrawerBuilder {
 
     }
 
-    private final List<String> nav_drawer_options() {
+    private List<String> nav_drawer_options() {
         List<String> options = new ArrayList<String>();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean IUnderstand = prefs.getBoolean("I_understand", false);
-        if(IUnderstand == false) {
+        if(!IUnderstand) {
             options.add("Settings");
             return options;
         }
@@ -90,7 +88,6 @@ public class NavDrawerBuilder {
         options.add("Settings");
 //        options.add("Fake Numbers");
 //        options.add("Add Double Calibration");
-//        options.add("Share Test");
         return options;
     }
 
@@ -98,7 +95,7 @@ public class NavDrawerBuilder {
         List<Intent> options = new ArrayList<Intent>();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean IUnderstand = prefs.getBoolean("I_understand", false);
-        if(IUnderstand == false) {
+        if(!IUnderstand) {
             options.add(new Intent(context, Preferences.class));
             return options;
         }
@@ -147,7 +144,6 @@ public class NavDrawerBuilder {
         options.add(new Intent(context, Preferences.class));
 //        options.add(new Intent(context, FakeNumbers.class));
 //        options.add(new Intent(context, DoubleCalibrationActivity.class));
-//        options.add(new Intent(context, ShareTest.class));
         return options;
     }
 

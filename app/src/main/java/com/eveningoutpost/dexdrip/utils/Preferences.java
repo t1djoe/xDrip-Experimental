@@ -13,7 +13,6 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.preference.RingtonePreference;
@@ -22,7 +21,6 @@ import android.util.Log;
 
 import com.eveningoutpost.dexdrip.R;
 import com.eveningoutpost.dexdrip.UtilityModels.CollectionServiceStarter;
-import com.eveningoutpost.dexdrip.UtilityModels.ForegroundServiceStarter;
 import com.eveningoutpost.dexdrip.UtilityModels.PebbleSync;
 
 import java.util.List;
@@ -39,21 +37,12 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class Preferences extends PreferenceActivity {
-    public  static SharedPreferences prefs;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new AllPrefsFragment()).commit();
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-//        addPreferencesFromResource(R.xml.pref_general);
-
     }
 
     @Override
@@ -167,7 +156,7 @@ public class Preferences extends PreferenceActivity {
             final PreferenceCategory otherCategory = (PreferenceCategory) findPreference("other_category");
             final PreferenceScreen calibrationAlertsScreen = (PreferenceScreen) findPreference("calibration_alerts_screen");
             final PreferenceCategory alertsCategory = (PreferenceCategory) findPreference("alerts_category");
-            prefs =  getPreferenceManager().getDefaultSharedPreferences(getActivity());
+            SharedPreferences prefs =  PreferenceManager.getDefaultSharedPreferences(getActivity());
             Log.d("PREF", prefs.getString("dex_collection_method", "BluetoothWixel"));
             if(prefs.getString("dex_collection_method", "BluetoothWixel").compareTo("DexcomShare") != 0) {
                 collectionCategory.removePreference(shareKey);
@@ -218,6 +207,7 @@ public class Preferences extends PreferenceActivity {
                         otherCategory.addPreference(interpretRaw);
                         otherCategory.removePreference(predictiveBG);
                         alertsCategory.removePreference(calibrationAlertsScreen);
+                        SharedPreferences prefs =  PreferenceManager.getDefaultSharedPreferences(preference.getContext());
                         prefs.edit().putBoolean("calibration_notifications", false).apply();
                     }
 

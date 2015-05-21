@@ -27,13 +27,7 @@ public class DatabaseUtil {
             final String dir = getExternalDir();
             makeSureDirectoryExists(dir);
 
-            final StringBuilder sb = new StringBuilder();
-            sb.append(dir);
-            sb.append("/export");
-            sb.append(DateFormat.format("yyyyMMdd-kkmmss", System.currentTimeMillis()));
-            sb.append(".sqlite");
-
-            final String filename = sb.toString();
+            final String filename = dir + "/export" + DateFormat.format("yyyyMMdd-kkmmss", System.currentTimeMillis()) + ".sqlite";
             final File sd = Environment.getExternalStorageDirectory();
             if (sd.canWrite()) {
                 final File currentDB = context.getDatabasePath(databaseName);

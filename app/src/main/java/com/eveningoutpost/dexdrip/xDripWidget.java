@@ -21,9 +21,9 @@ import java.util.List;
  * Implementation of App Widget functionality.
  */
 public class xDripWidget extends AppWidgetProvider {
-    public static RemoteViews views;
-    public static Context mContext;
-    public static String TAG = "xDripWidget";
+    private static RemoteViews views;
+    private static Context mContext;
+    private static String TAG = "xDripWidget";
 
 
     @Override
@@ -46,7 +46,7 @@ public class xDripWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+    private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         mContext = context;
         views = new RemoteViews(context.getPackageName(), R.layout.x_drip_widget);
         Log.d(TAG, "Update widget signal received");
@@ -55,7 +55,7 @@ public class xDripWidget extends AppWidgetProvider {
     }
 
 
-    public static void displayCurrentInfo(AppWidgetManager appWidgetManager, int appWidgetId) {
+    private static void displayCurrentInfo(AppWidgetManager appWidgetManager, int appWidgetId) {
         BgGraphBuilder bgGraphBuilder = new BgGraphBuilder(mContext);
         BgReading lastBgreading = BgReading.lastNoSenssor();
         if (lastBgreading != null) {

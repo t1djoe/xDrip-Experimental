@@ -78,14 +78,14 @@ public class SerialInputOutputManager implements Runnable {
     /**
      * Creates a new instance with no listener.
      */
-    public SerialInputOutputManager(UsbSerialPort driver) {
+    private SerialInputOutputManager(UsbSerialPort driver) {
         this(driver, null);
     }
 
     /**
      * Creates a new instance with the provided listener.
      */
-    public SerialInputOutputManager(UsbSerialPort driver, Listener listener) {
+    private SerialInputOutputManager(UsbSerialPort driver, Listener listener) {
         mDriver = driver;
         mListener = listener;
     }
@@ -94,7 +94,7 @@ public class SerialInputOutputManager implements Runnable {
         mListener = listener;
     }
 
-    public synchronized Listener getListener() {
+    private synchronized Listener getListener() {
         return mListener;
     }
 

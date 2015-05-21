@@ -21,12 +21,12 @@ import com.eveningoutpost.dexdrip.R;
 
 public class AlertPlayer {
 
-    static AlertPlayer singletone;
+    private static AlertPlayer singletone;
 
     private final static String TAG = AlertPlayer.class.getSimpleName();
     private MediaPlayer mediaPlayer;
-    int volumeBeforeAlert;
-    Context context;
+    private int volumeBeforeAlert;
+    private Context context;
 
 
     public static AlertPlayer getPlayer() {

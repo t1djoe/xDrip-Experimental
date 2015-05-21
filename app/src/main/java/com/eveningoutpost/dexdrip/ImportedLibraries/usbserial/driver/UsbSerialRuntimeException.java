@@ -25,7 +25,7 @@ package com.eveningoutpost.dexdrip.ImportedLibraries.usbserial.driver;
  * @author mike wakerly (opensource@hoho.com)
  */
 @SuppressWarnings("serial")
-public class UsbSerialRuntimeException extends RuntimeException {
+class UsbSerialRuntimeException extends RuntimeException {
 
     public UsbSerialRuntimeException() {
         super();

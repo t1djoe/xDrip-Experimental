@@ -16,25 +16,25 @@ import java.util.Arrays;
 // Some of this code may have been modified for use in this project
 
 public class PageHeader {
-    protected final int HEADER_SIZE=28;
-    protected final int FIRSTRECORDINDEX_OFFSET=0;
-    protected final int NUMRECS_OFFSET=4;
-    protected final int RECTYPE_OFFSET=8;
-    protected final int REV_OFFSET=9;
-    protected final int PAGENUMBER_OFFSET=10;
-    protected final int RESERVED2_OFFSET=14;
-    protected final int RESERVED3_OFFSET=18;
-    protected final int RESERVED4_OFFSET=22;
+    private final int HEADER_SIZE=28;
+    private final int FIRSTRECORDINDEX_OFFSET=0;
+    private final int NUMRECS_OFFSET=4;
+    private final int RECTYPE_OFFSET=8;
+    private final int REV_OFFSET=9;
+    private final int PAGENUMBER_OFFSET=10;
+    private final int RESERVED2_OFFSET=14;
+    private final int RESERVED3_OFFSET=18;
+    private final int RESERVED4_OFFSET=22;
 
-    protected int firstRecordIndex;
-    protected int numOfRecords;
-    protected Constants.RECORD_TYPES recordType;
-    protected byte revision;
-    protected int pageNumber;
-    protected int reserved2;
-    protected int reserved3;
-    protected int reserved4;
-    protected byte[] crc=new byte[2];
+    private int firstRecordIndex;
+    private int numOfRecords;
+    private Constants.RECORD_TYPES recordType;
+    private byte revision;
+    private int pageNumber;
+    private int reserved2;
+    private int reserved3;
+    private int reserved4;
+    private byte[] crc=new byte[2];
 
 
     public PageHeader(byte[] packet) {

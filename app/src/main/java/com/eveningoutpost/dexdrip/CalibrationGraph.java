@@ -3,13 +3,9 @@ package com.eveningoutpost.dexdrip;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.eveningoutpost.dexdrip.Models.Calibration;
-import com.eveningoutpost.dexdrip.UtilityModels.Constants;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -30,16 +26,16 @@ public class CalibrationGraph extends Activity implements NavigationDrawerFragme
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private LineChartView chart;
     private LineChartData data;
-    public double  start_x = 50;
-    public double  end_x = 300;
-    
-    TextView GraphHeader;
+    private double  start_x = 50;
+    private double  end_x = 300;
+
+    private TextView GraphHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibration_graph);
-        
+
         GraphHeader = (TextView) findViewById(R.id.CalibrationGraphHeader);
     }
     @Override
@@ -58,7 +54,7 @@ public class CalibrationGraph extends Activity implements NavigationDrawerFragme
     }
 
 
-    public void setupCharts() {
+    private void setupCharts() {
         chart = (LineChartView) findViewById(R.id.chart);
         List<Calibration> calibrations = Calibration.allForSensor();
         List<PointValue> values = new ArrayList<PointValue>();
@@ -81,7 +77,7 @@ public class CalibrationGraph extends Activity implements NavigationDrawerFragme
         if(calibration != null) {
             lineValues.add(new PointValue((float) start_x, (float) (start_x * calibration.slope + calibration.intercept)));
             lineValues.add(new PointValue((float) end_x, (float) (end_x * calibration.slope + calibration.intercept)));
-            
+
             DecimalFormat df = new DecimalFormat("#");
             df.setMaximumFractionDigits(2);
             df.setMinimumFractionDigits(2);

@@ -41,10 +41,10 @@ public class Calibration extends Model {
 
     @Expose
     @Column(name = "sensor_age_at_time_of_estimation")
-    public double sensor_age_at_time_of_estimation;
+    private double sensor_age_at_time_of_estimation;
 
     @Column(name = "sensor", index = true)
-    public Sensor sensor;
+    private Sensor sensor;
 
     @Expose
     @Column(name = "bg")
@@ -52,7 +52,7 @@ public class Calibration extends Model {
 
     @Expose
     @Column(name = "raw_value")
-    public double raw_value;
+    private double raw_value;
 //
 //    @Expose
 //    @Column(name = "filtered_value")
@@ -60,7 +60,7 @@ public class Calibration extends Model {
 
     @Expose
     @Column(name = "adjusted_raw_value")
-    public double adjusted_raw_value;
+    private double adjusted_raw_value;
 
     @Expose
     @Column(name = "sensor_confidence")
@@ -84,7 +84,7 @@ public class Calibration extends Model {
 
     @Expose
     @Column(name = "distance_from_estimate")
-    public double distance_from_estimate;
+    private double distance_from_estimate;
 
     @Expose
     @Column(name = "estimate_raw_at_time_of_calibration")
@@ -92,7 +92,7 @@ public class Calibration extends Model {
 
     @Expose
     @Column(name = "estimate_bg_at_time_of_calibration")
-    public double estimate_bg_at_time_of_calibration;
+    private double estimate_bg_at_time_of_calibration;
 
     @Expose
     @Column(name = "uuid", index = true)
@@ -100,7 +100,7 @@ public class Calibration extends Model {
 
     @Expose
     @Column(name = "sensor_uuid", index = true)
-    public String sensor_uuid;
+    private String sensor_uuid;
 
     @Expose
     @Column(name = "possible_bad")
@@ -116,7 +116,7 @@ public class Calibration extends Model {
 
     @Expose
     @Column(name = "second_decay")
-    public double second_decay;
+    private double second_decay;
 
     @Expose
     @Column(name = "first_slope")
@@ -124,7 +124,7 @@ public class Calibration extends Model {
 
     @Expose
     @Column(name = "second_slope")
-    public double second_slope;
+    private double second_slope;
 
     @Expose
     @Column(name = "first_intercept")
@@ -132,7 +132,7 @@ public class Calibration extends Model {
 
     @Expose
     @Column(name = "second_intercept")
-    public double second_intercept;
+    private double second_intercept;
 
     @Expose
     @Column(name = "first_scale")
@@ -140,7 +140,7 @@ public class Calibration extends Model {
 
     @Expose
     @Column(name = "second_scale")
-    public double second_scale;
+    private double second_scale;
 
     public static void initialCalibration(double bg1, double bg2, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -297,7 +297,7 @@ public class Calibration extends Model {
         }
     }
 
-    public static boolean is_new(CalSubrecord calSubrecord, long addativeOffset) {
+    private static boolean is_new(CalSubrecord calSubrecord, long addativeOffset) {
         Sensor sensor = Sensor.currentSensor();
         Calibration calibration = new Select()
                 .from(Calibration.class)
@@ -392,7 +392,7 @@ public class Calibration extends Model {
                 .execute();
     }
 
-    public static void calculate_w_l_s() {
+    private static void calculate_w_l_s() {
         if (Sensor.isActive()) {
             double l = 0;
             double m = 0;
@@ -455,7 +455,7 @@ public class Calibration extends Model {
         Calibration thisCalibration = calibrations.get(0);
         if(status == 0) {
             if (calibrations.size() == 3) {
-                if ((Math.abs(thisCalibration.bg - thisCalibration.estimate_bg_at_time_of_calibration) < 30) && (calibrations.get(1).possible_bad != null && calibrations.get(1).possible_bad == true)) {
+                if ((Math.abs(thisCalibration.bg - thisCalibration.estimate_bg_at_time_of_calibration) < 30) && (calibrations.get(1).possible_bad != null && calibrations.get(1).possible_bad)) {
                     return calibrations.get(1).slope;
                 } else {
                     return Math.max(((-0.048) * (thisCalibration.sensor_age_at_time_of_estimation / (60000 * 60 * 24))) + 1.1, 1.08);
@@ -466,7 +466,7 @@ public class Calibration extends Model {
             return 1;
         } else {
             if (calibrations.size() == 3) {
-                if ((Math.abs(thisCalibration.bg - thisCalibration.estimate_bg_at_time_of_calibration) < 30) && (calibrations.get(1).possible_bad != null && calibrations.get(1).possible_bad == true)) {
+                if ((Math.abs(thisCalibration.bg - thisCalibration.estimate_bg_at_time_of_calibration) < 30) && (calibrations.get(1).possible_bad != null && calibrations.get(1).possible_bad)) {
                     return calibrations.get(1).slope;
                 } else {
                     return 1.3;
@@ -496,10 +496,10 @@ public class Calibration extends Model {
         Log.w(TAG, "CALIBRATIONS TIME PERCENTAGE WEIGHT: " + time_percentage);
         return Math.max((((((slope_confidence + sensor_confidence) * (time_percentage))) / 2) * 100), 1);
     }
-    public static void adjustRecentBgReadings() {// This just adjust the last 30 bg readings transition from one calibration point to the next
+    private static void adjustRecentBgReadings() {// This just adjust the last 30 bg readings transition from one calibration point to the next
         adjustRecentBgReadings(30);
     }
-    public static void adjustRecentBgReadings(int adjustCount) {
+    private static void adjustRecentBgReadings(int adjustCount) {
         //TODO: add some handling around calibration overrides as they come out looking a bit funky
         List<Calibration> calibrations = Calibration.latest(3);
         List<BgReading> bgReadings = BgReading.latestUnCalculated(adjustCount);
@@ -534,7 +534,7 @@ public class Calibration extends Model {
         CalibrationSendQueue.addToQueue(this, context);
     }
 
-    public static void requestCalibrationIfRangeTooNarrow() {
+    private static void requestCalibrationIfRangeTooNarrow() {
         double max = Calibration.max_recent();
         double min = Calibration.min_recent();
         if ((max - min) < 55) {
@@ -544,7 +544,7 @@ public class Calibration extends Model {
         }
     }
 
-    public static void clear_all_existing_calibrations() {
+    private static void clear_all_existing_calibrations() {
         CalibrationRequest.clearAll();
         List<Calibration> pastCalibrations = Calibration.allForSensor();
         if (pastCalibrations != null) {
@@ -576,7 +576,7 @@ public class Calibration extends Model {
                 .executeSingle();
     }
 
-    public static Calibration first() {
+    private static Calibration first() {
         Sensor sensor = Sensor.currentSensor();
         return new Select()
                 .from(Calibration.class)
@@ -586,7 +586,7 @@ public class Calibration extends Model {
                 .orderBy("timestamp asc")
                 .executeSingle();
     }
-    public static double max_recent() {
+    private static double max_recent() {
         Sensor sensor = Sensor.currentSensor();
         Calibration calibration = new Select()
                 .from(Calibration.class)
@@ -603,7 +603,7 @@ public class Calibration extends Model {
         }
     }
 
-    public static double min_recent() {
+    private static double min_recent() {
         Sensor sensor = Sensor.currentSensor();
         Calibration calibration = new Select()
                 .from(Calibration.class)

@@ -22,7 +22,7 @@ public class TransmitterData extends Model {
     private final static String TAG = TransmitterData.class.getSimpleName();
 
     @Column(name = "timestamp", index = true)
-    public long timestamp;
+    private long timestamp;
 
     @Column(name = "raw_data")
     public double raw_data;
@@ -34,7 +34,7 @@ public class TransmitterData extends Model {
     public int sensor_battery_level;
 
     @Column(name = "uuid", index = true)
-    public String uuid;
+    private String uuid;
 
     public static TransmitterData create(byte[] buffer, int len, Long timestamp) {
         if (len < 6) { return null; }
@@ -87,14 +87,14 @@ public class TransmitterData extends Model {
         return transmitterData;
     }
 
-    public static TransmitterData last() {
+    private static TransmitterData last() {
         return new Select()
                 .from(TransmitterData.class)
                 .orderBy("_ID desc")
                 .executeSingle();
     }
 
-    public static void randomDelay(float min, float max){
+    private static void randomDelay(float min, float max){
         int random = (int)(max * Math.random() + min);
         try {
             Log.d(TAG, "randomDelay: Sleeping for " + random + "ms");

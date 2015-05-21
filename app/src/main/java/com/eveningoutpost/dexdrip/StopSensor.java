@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -16,12 +14,12 @@ import com.eveningoutpost.dexdrip.UtilityModels.AlertPlayer;
 public class StopSensor extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private String menu_name = "Stop Sensor";
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    public Button button;
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(Sensor.isActive() == false) {
+        if(!Sensor.isActive()) {
             Intent intent = new Intent(this, StartNewSensor.class);
             startActivity(intent);
             finish();
@@ -43,7 +41,7 @@ public class StopSensor extends Activity implements NavigationDrawerFragment.Nav
         mNavigationDrawerFragment.swapContext(position);
     }
 
-    public void addListenerOnButton() {
+    private void addListenerOnButton() {
 
         button = (Button)findViewById(R.id.stop_sensor);
 

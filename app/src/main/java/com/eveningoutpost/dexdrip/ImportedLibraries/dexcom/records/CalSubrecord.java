@@ -1,7 +1,5 @@
 package com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records;
 
-import android.util.Log;
-
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.Utils;
 
 import java.nio.ByteBuffer;

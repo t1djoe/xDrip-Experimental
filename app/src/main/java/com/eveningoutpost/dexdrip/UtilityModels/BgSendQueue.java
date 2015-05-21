@@ -37,10 +37,10 @@ public class BgSendQueue extends Model {
     public boolean success;
 
     @Column(name = "mongo_success", index = true)
-    public boolean mongo_success;
+    private boolean mongo_success;
 
     @Column(name = "operation_type")
-    public String operation_type;
+    private String operation_type;
 
     public static BgSendQueue nextBgJob() {
         return new Select()
@@ -139,7 +139,7 @@ public class BgSendQueue extends Model {
         save();
     }
 
-    public static int getBatteryLevel(Context context) {
+    private static int getBatteryLevel(Context context) {
         Intent batteryIntent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);

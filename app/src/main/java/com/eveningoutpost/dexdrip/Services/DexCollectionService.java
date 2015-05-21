@@ -31,10 +31,8 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -46,27 +44,20 @@ import com.eveningoutpost.dexdrip.UtilityModels.ForegroundServiceStarter;
 import com.eveningoutpost.dexdrip.UtilityModels.HM10Attributes;
 import com.eveningoutpost.dexdrip.Models.TransmitterData;
 
-import java.nio.charset.Charset;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.UUID;
-import static com.activeandroid.ActiveAndroid.beginTransaction;
-import static com.activeandroid.ActiveAndroid.endTransaction;
-import static com.activeandroid.ActiveAndroid.setTransactionSuccessful;
-import com.activeandroid.query.Select;
 
 @TargetApi(Build.VERSION_CODES.KITKAT)
 public class DexCollectionService extends Service {
     private final static String TAG = DexCollectionService.class.getSimpleName();
     private String mDeviceAddress;
-    SharedPreferences prefs;
+    private SharedPreferences prefs;
 
-    public DexCollectionService dexCollectionService;
+    private DexCollectionService dexCollectionService;
 
     private BluetoothManager mBluetoothManager;
     private BluetoothAdapter mBluetoothAdapter;
@@ -75,7 +66,7 @@ public class DexCollectionService extends Service {
     private int mConnectionState = BluetoothProfile.STATE_DISCONNECTING;
     private BluetoothDevice device;
     private BluetoothGattCharacteristic mCharacteristic;
-    long lastPacketTime;
+    private long lastPacketTime;
     private byte[] lastdata = null;
     private Context mContext;
     private final int STATE_DISCONNECTED = BluetoothProfile.STATE_DISCONNECTED;
@@ -83,8 +74,8 @@ public class DexCollectionService extends Service {
     private final int STATE_CONNECTING = BluetoothProfile.STATE_CONNECTING;
     private final int STATE_CONNECTED = BluetoothProfile.STATE_CONNECTED;
 
-    public final UUID xDripDataService = UUID.fromString(HM10Attributes.HM_10_SERVICE);
-    public final UUID xDripDataCharacteristic = UUID.fromString(HM10Attributes.HM_RX_TX);
+    private final UUID xDripDataService = UUID.fromString(HM10Attributes.HM_10_SERVICE);
+    private final UUID xDripDataCharacteristic = UUID.fromString(HM10Attributes.HM_RX_TX);
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -128,7 +119,7 @@ public class DexCollectionService extends Service {
         Log.w(TAG, "SERVICE STOPPED");
     }
 
-    public SharedPreferences.OnSharedPreferenceChangeListener prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
             if (key.compareTo("run_service_in_foreground") == 0) {
                 Log.e("FOREGROUND", "run_service_in_foreground changed!");
@@ -144,11 +135,11 @@ public class DexCollectionService extends Service {
         }
     };
 
-    public void listenForChangeInSettings() {
+    private void listenForChangeInSettings() {
         prefs.registerOnSharedPreferenceChangeListener(prefListener);
     }
 
-    public void setRetryTimer() {
+    private void setRetryTimer() {
         if (CollectionServiceStarter.isBTWixel(getApplicationContext()) || CollectionServiceStarter.isDexbridgeWixel(getApplicationContext())) {
             long retry_in = (1000 * 65);
             Log.d(TAG, "setRetryTimer: Restarting in: " + (retry_in/1000)  + " seconds");
@@ -158,7 +149,7 @@ public class DexCollectionService extends Service {
         }
     }
 
-    public void setFailoverTimer() {
+    private void setFailoverTimer() {
         if (CollectionServiceStarter.isBTWixel(getApplicationContext())|| CollectionServiceStarter.isDexbridgeWixel(getApplicationContext())) {
             long retry_in = (1000 * 60 * 6);
             Log.d(TAG, "setFailoverTimer: Fallover Restarting in: " + (retry_in / (60 * 1000)) + " minutes");
@@ -170,7 +161,7 @@ public class DexCollectionService extends Service {
         }
     }
 
-    public void attemptConnection() {
+    private void attemptConnection() {
         mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         if (mBluetoothManager != null) {
             mBluetoothAdapter = mBluetoothManager.getAdapter();
@@ -305,7 +296,7 @@ public class DexCollectionService extends Service {
         return i;
     }
 
-    public boolean connect(final String address) {
+    private boolean connect(final String address) {
         Log.w(TAG, "connect: going to connect to device at address" + address);
         if (mBluetoothAdapter == null || address == null) {
             Log.w(TAG, "connect: BluetoothAdapter not initialized or unspecified address.");
@@ -329,7 +320,7 @@ public class DexCollectionService extends Service {
         return true;
     }
 
-    public void close() {
+    private void close() {
         Log.w(TAG, "close: Closing Connection");
         if (mBluetoothGatt == null) {
             return;
@@ -341,7 +332,7 @@ public class DexCollectionService extends Service {
         mConnectionState = STATE_DISCONNECTED;
     }
 
-    public void setSerialDataToTransmitterRawData(byte[] buffer, int len) {
+    private void setSerialDataToTransmitterRawData(byte[] buffer, int len) {
         long timestamp = new Date().getTime();
         if (CollectionServiceStarter.isDexbridgeWixel(getApplicationContext())) {
             Log.w(TAG, "setSerialDataToTransmitterRawData: Dealing with Dexbridge packet!");

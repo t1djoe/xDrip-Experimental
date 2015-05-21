@@ -26,7 +26,7 @@ public class CalibrationSendQueue extends Model {
     public boolean success;
 
     @Column(name = "mongo_success", index = true)
-    public boolean mongo_success;
+    private boolean mongo_success;
 
     public static CalibrationSendQueue nextCalibrationJob() {
         CalibrationSendQueue job = new Select()

@@ -36,7 +36,6 @@ import com.eveningoutpost.dexdrip.Models.CalibrationRequest;
 import com.eveningoutpost.dexdrip.Models.UserNotification;
 import com.eveningoutpost.dexdrip.R;
 import com.eveningoutpost.dexdrip.Sensor;
-import com.eveningoutpost.dexdrip.Services.MissedReadingService;
 
 import java.util.Date;
 import java.util.List;
@@ -46,42 +45,42 @@ import java.util.List;
  */
 public class Notifications extends IntentService {
     public static final long[] vibratePattern = {0,1000,300,1000,300,1000};
-    public static boolean bg_notifications;
-    public static boolean bg_ongoing;
-    public static boolean bg_vibrate;
-    public static boolean bg_lights;
-    public static boolean bg_sound;
-    public static boolean bg_sound_in_silent;
-    public static int bg_snooze;
-    public static String bg_notification_sound;
+    private static boolean bg_notifications;
+    private static boolean bg_ongoing;
+    private static boolean bg_vibrate;
+    private static boolean bg_lights;
+    private static boolean bg_sound;
+    private static boolean bg_sound_in_silent;
+    private static int bg_snooze;
+    private static String bg_notification_sound;
 
-    public static boolean calibration_notifications;
-    public static boolean calibration_override_silent;
-    public static int calibration_snooze;
-    public static String calibration_notification_sound;
-    public static boolean doMgdl;
+    private static boolean calibration_notifications;
+    private static boolean calibration_override_silent;
+    private static int calibration_snooze;
+    private static String calibration_notification_sound;
+    private static boolean doMgdl;
     private final static String TAG = AlertPlayer.class.getSimpleName();
 
-    Context mContext;
+    private Context mContext;
     private static Handler mHandler = new Handler(Looper.getMainLooper());
 
-    int currentVolume;
-    AudioManager manager;
-    Bitmap iconBitmap;
-    Bitmap notifiationBitmap;
+    private int currentVolume;
+    private AudioManager manager;
+    private Bitmap iconBitmap;
+    private Bitmap notifiationBitmap;
 
     final int BgNotificationId = 001;
-    final int calibrationNotificationId = 002;
-    final int doubleCalibrationNotificationId = 003;
-    final int extraCalibrationNotificationId = 004;
+    private final int calibrationNotificationId = 002;
+    private final int doubleCalibrationNotificationId = 003;
+    private final int extraCalibrationNotificationId = 004;
     public static final int exportCompleteNotificationId = 005;
     final int ongoingNotificationId = 8811;
     public static final int exportAlertNotificationId = 006;
-    public static final int uncleanAlertNotificationId = 007;
-    public static final int missedAlertNotificationId = 010;
-    final static int callbackPeriod = 60000 * 1;
+    private static final int uncleanAlertNotificationId = 007;
+    private static final int missedAlertNotificationId = 010;
+    private final static int callbackPeriod = 60000 * 1;
 
-    SharedPreferences prefs;
+    private SharedPreferences prefs;
 
     public Notifications() {
         super("Notifications");
@@ -96,7 +95,7 @@ public class Notifications extends IntentService {
         periodicTimer(getApplicationContext());
     }
 
-    public void ReadPerfs(Context context) {
+    private void ReadPerfs(Context context) {
         mContext = context;
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         bg_notifications = prefs.getBoolean("bg_notifications", true);
@@ -121,7 +120,7 @@ public class Notifications extends IntentService {
  */
 
 
-    public void FileBasedNotifications(Context context) {
+    private void FileBasedNotifications(Context context) {
         ReadPerfs(context);
         Sensor sensor = Sensor.currentSensor();
 
@@ -199,7 +198,7 @@ public class Notifications extends IntentService {
  */
 
     // only function that is really called from outside...
-    public void notificationSetter(Context context) {
+    private void notificationSetter(Context context) {
         ReadPerfs(context);
         if(prefs.getLong("alerts_disabled_until", 0) > new Date().getTime()){
             Log.w("NOTIFICATIONS", "Notifications are currently disabled!!");
@@ -240,7 +239,7 @@ public class Notifications extends IntentService {
         }
     }
 
-    public void periodicTimer(Context context) {
+    private void periodicTimer(Context context) {
         // This is the timer function that will be called every minute. It is used in order to replay alerts,
         // execute snoozes and alert if we are not recieving data for a long time.
         Log.e(TAG, "PeriodicTimer called");

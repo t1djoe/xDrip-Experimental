@@ -8,16 +8,16 @@ import com.google.gson.annotations.Expose;
  */
 public class Egv {
     @Expose
-    public int Trend;
+    private int Trend;
 
     @Expose
-    public int Value;
+    private int Value;
 
     @Expose
-    public String ST;
+    private String ST;
 
     @Expose
-    public String DT;
+    private String DT;
 
 
     public Egv(BgReading bg) {
@@ -27,12 +27,12 @@ public class Egv {
         this.Trend = slopeOrdinal(bg);
     }
 
-    public String toDateString(double timestamp) {
+    private String toDateString(double timestamp) {
         long shortened = (long) Math.floor((timestamp/1000));
         return "/Date(" + Long.toString(shortened*1000) + ")/";
     }
 
-    public int slopeOrdinal(BgReading bg) {
+    private int slopeOrdinal(BgReading bg) {
         double slope_by_minute = bg.calculated_value_slope * 60000;
         int arrow = 0;
         if (slope_by_minute <= (-3.5)) {

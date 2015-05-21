@@ -1,6 +1,5 @@
 package com.eveningoutpost.dexdrip.UtilityModels;
 
-import java.math.BigInteger;
 import java.util.UUID;
 
 /**

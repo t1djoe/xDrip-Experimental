@@ -41,7 +41,7 @@ public class ShareRest {
     private String login;
     private String password;
     private SharedPreferences prefs;
-    OkClient client;
+    private OkClient client;
 
     public static Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
@@ -182,7 +182,7 @@ public class ShareRest {
         return adapterBuilder;
     }
 
-    RequestInterceptor authorizationRequestInterceptor = new RequestInterceptor() {
+    private RequestInterceptor authorizationRequestInterceptor = new RequestInterceptor() {
         @Override
         public void intercept(RequestInterceptor.RequestFacade request) {
             request.addHeader("User-Agent", "Dexcom Share/3.0.2.11 CFNetwork/711.2.23 Darwin/14.0.0");
@@ -190,7 +190,7 @@ public class ShareRest {
             request.addHeader("Accept", "application/json");
         }
     };
-    RequestInterceptor getBgRequestInterceptor = new RequestInterceptor() {
+    private RequestInterceptor getBgRequestInterceptor = new RequestInterceptor() {
         @Override
         public void intercept(RequestInterceptor.RequestFacade request) {
             request.addHeader("User-Agent", "Dexcom Share/3.0.2.11 CFNetwork/711.2.23 Darwin/14.0.0");
@@ -200,7 +200,7 @@ public class ShareRest {
         }
     };
 
-    public OkHttpClient getOkHttpClient() {
+    private OkHttpClient getOkHttpClient() {
 
         try {
             final TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
@@ -243,13 +243,13 @@ public class ShareRest {
 
     }
 
-    public OkClient getOkClient (){
+    private OkClient getOkClient(){
         OkHttpClient client1 = getOkHttpClient();
         OkClient _client = new OkClient(client1);
         return _client;
     }
 
-    public Map<String, String> queryParamMap(String sessionId) {
+    private Map<String, String> queryParamMap(String sessionId) {
         Map map = new HashMap<String, String>();
         map.put("sessionID", sessionId);
         map.put("minutes", String.valueOf(minutesCount()));
@@ -322,7 +322,7 @@ public class ShareRest {
             return false;
         }
     }
-    public int requestCount() {
+    private int requestCount() {
         BgReading bg = BgReading.last();
         if(bg != null) {
             return 20;
@@ -333,7 +333,7 @@ public class ShareRest {
         }
     }
 
-    public int minutesCount() {
+    private int minutesCount() {
         BgReading bg = BgReading.last();
         if(bg != null && bg.timestamp < new Date().getTime()) {
             return Math.min((int) Math.ceil(((new Date().getTime() - bg.timestamp) / (1000 * 60))), 1440);
@@ -342,7 +342,7 @@ public class ShareRest {
         }
     }
 
-    public Map<String, String> querySessionMap(String sessionId) {
+    private Map<String, String> querySessionMap(String sessionId) {
         Map map = new HashMap<String, String>();
         map.put("sessionID", sessionId);
         return map;

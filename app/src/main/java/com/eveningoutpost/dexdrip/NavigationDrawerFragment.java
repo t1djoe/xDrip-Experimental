@@ -37,7 +37,7 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
     private String menu_name;
-    public NavDrawerBuilder navDrawerBuilder;
+    private NavDrawerBuilder navDrawerBuilder;
     private int menu_position;
     private List<String> menu_option_list;
     private List<Intent> intent_list;
@@ -90,7 +90,7 @@ public class NavigationDrawerFragment extends Fragment {
         return mDrawerListView;
     }
 
-    public boolean isDrawerOpen() {
+    private boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
 

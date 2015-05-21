@@ -32,19 +32,19 @@ import lecho.lib.hellocharts.view.Chart;
  */
 public class BgGraphBuilder {
     public static final int FUZZER = (1000 * 30 * 5);
-    public double  end_time = (new Date().getTime() + (60000 * 10)) / FUZZER;
-    public double  start_time = end_time - ((60000 * 60 * 24)) / FUZZER;
-    public Context context;
-    public SharedPreferences prefs;
+    private double  end_time = (new Date().getTime() + (60000 * 10)) / FUZZER;
+    private double  start_time = end_time - ((60000 * 60 * 24)) / FUZZER;
+    private Context context;
+    private SharedPreferences prefs;
     public double highMark;
     public double lowMark;
-    public double defaultMinY;
-    public double defaultMaxY;
-    public boolean doMgdl;
-    final int pointSize;
-    final int axisTextSize;
-    final int previewAxisTextSize;
-    final int hoursPreviewStep;
+    private double defaultMinY;
+    private double defaultMaxY;
+    private boolean doMgdl;
+    private final int pointSize;
+    private final int axisTextSize;
+    private final int previewAxisTextSize;
+    private final int hoursPreviewStep;
 
     private double endHour;
     private final int numValues =(60/5)*24;
@@ -53,7 +53,7 @@ public class BgGraphBuilder {
     private List<PointValue> highValues = new ArrayList<PointValue>();
     private List<PointValue> lowValues = new ArrayList<PointValue>();
     private List<PointValue> rawInterpretedValues = new ArrayList<PointValue>();
-    public Viewport viewport;
+    private Viewport viewport;
 
 
     public BgGraphBuilder(Context context){
@@ -128,7 +128,7 @@ public class BgGraphBuilder {
         return inRangeValuesLine;
     }
 
-    public Line rawInterpretedLine() {
+    private Line rawInterpretedLine() {
         Line line = new Line(rawInterpretedValues);
         line.setHasLines(false);
         line.setPointRadius(1);
@@ -178,7 +178,7 @@ public class BgGraphBuilder {
         return lowLine;
     }
 
-    public Line maxShowLine() {
+    private Line maxShowLine() {
         List<PointValue> maxShowValues = new ArrayList<PointValue>();
         maxShowValues.add(new PointValue((float)start_time, (float)defaultMaxY));
         maxShowValues.add(new PointValue((float)end_time, (float)defaultMaxY));
@@ -188,7 +188,7 @@ public class BgGraphBuilder {
         return maxShowLine;
     }
 
-    public Line minShowLine() {
+    private Line minShowLine() {
         List<PointValue> minShowValues = new ArrayList<PointValue>();
         minShowValues.add(new PointValue((float)start_time, (float)defaultMinY));
         minShowValues.add(new PointValue((float)end_time, (float)defaultMinY));
@@ -255,7 +255,7 @@ public class BgGraphBuilder {
         return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
-    public Axis previewXAxis(){
+    private Axis previewXAxis(){
         List<AxisValue> previewXaxisValues = new ArrayList<AxisValue>();
         final java.text.DateFormat timeFormat = hourFormat();
         timeFormat.setTimeZone(TimeZone.getDefault());
@@ -339,7 +339,7 @@ public class BgGraphBuilder {
         }
     }
 
-    public double mmolConvert(double mgdl) {
+    private double mmolConvert(double mgdl) {
         return mgdl * Constants.MGDL_TO_MMOLL;
     }
 

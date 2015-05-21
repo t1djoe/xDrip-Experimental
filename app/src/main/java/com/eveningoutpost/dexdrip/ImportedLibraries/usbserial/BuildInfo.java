@@ -3,7 +3,7 @@ package com.eveningoutpost.dexdrip.ImportedLibraries.usbserial;
 /**
  * Static container of information about this library.
  */
-public final class BuildInfo {
+final class BuildInfo {
 
     /**
      * The current version of this library. Values are of the form

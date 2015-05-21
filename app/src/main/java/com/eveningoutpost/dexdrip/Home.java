@@ -1,9 +1,6 @@
 package com.eveningoutpost.dexdrip;
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,26 +12,20 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.eveningoutpost.dexdrip.UtilityModels.Constants;
 import com.eveningoutpost.dexdrip.Models.ActiveBluetoothDevice;
-import com.eveningoutpost.dexdrip.Models.AlertType;
 import com.eveningoutpost.dexdrip.Models.BgReading;
 import com.eveningoutpost.dexdrip.Models.Calibration;
-import com.eveningoutpost.dexdrip.Services.DexCollectionService;
 import com.eveningoutpost.dexdrip.Services.WixelReader;
 import com.eveningoutpost.dexdrip.UtilityModels.BgGraphBuilder;
 import com.eveningoutpost.dexdrip.UtilityModels.CollectionServiceStarter;
 import com.eveningoutpost.dexdrip.UtilityModels.IdempotentMigrations;
 import com.eveningoutpost.dexdrip.UtilityModels.Intents;
-import com.eveningoutpost.dexdrip.UtilityModels.Notifications;
 import com.eveningoutpost.dexdrip.utils.DatabaseUtil;
 
 import java.io.File;
@@ -58,24 +49,24 @@ public class Home extends Activity implements NavigationDrawerFragment.Navigatio
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private LineChartView chart;
     private PreviewLineChartView previewChart;
-    SharedPreferences prefs;
-    Viewport tempViewport = new Viewport();
-    Viewport holdViewport = new Viewport();
+    private SharedPreferences prefs;
+    private Viewport tempViewport = new Viewport();
+    private Viewport holdViewport = new Viewport();
     public float left;
     public float right;
     public float top;
     public float bottom;
-    public boolean updateStuff;
-    public boolean updatingPreviewViewport = false;
-    public boolean updatingChartViewport = false;
-    boolean isBTWixel;
-    boolean isDexbridgeWixel;
-    boolean isBTShare;
-    boolean isWifiWixel;
+    private boolean updateStuff;
+    private boolean updatingPreviewViewport = false;
+    private boolean updatingChartViewport = false;
+    private boolean isBTWixel;
+    private boolean isDexbridgeWixel;
+    private boolean isBTShare;
+    private boolean isWifiWixel;
 
-    public BgGraphBuilder bgGraphBuilder;
-    BroadcastReceiver _broadcastReceiver;
-    BroadcastReceiver newDataReceiver;
+    private BgGraphBuilder bgGraphBuilder;
+    private BroadcastReceiver _broadcastReceiver;
+    private BroadcastReceiver newDataReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +83,7 @@ public class Home extends Activity implements NavigationDrawerFragment.Navigatio
         setContentView(R.layout.activity_home);
     }
 
-    public void checkEula() {
+    private void checkEula() {
         boolean IUnderstand = prefs.getBoolean("I_understand", false);
         if (!IUnderstand) {
             Intent intent = new Intent(getApplicationContext(), LicenseAgreementActivity.class);
@@ -130,7 +121,7 @@ public class Home extends Activity implements NavigationDrawerFragment.Navigatio
         updateCurrentBgInfo();
     }
 
-    public void setupCharts() {
+    private void setupCharts() {
         bgGraphBuilder = new BgGraphBuilder(this);
         updateStuff = false;
         chart = (LineChartView) findViewById(R.id.chart);
@@ -184,7 +175,7 @@ public class Home extends Activity implements NavigationDrawerFragment.Navigatio
         mNavigationDrawerFragment.swapContext(position);
     }
 
-    public void setViewport() {
+    private void setViewport() {
         if (tempViewport.left == 0.0 || holdViewport.left == 0.0 || holdViewport.right  >= (new Date().getTime())) {
             previewChart.setCurrentViewport(bgGraphBuilder.advanceViewport(chart, previewChart), false);
         } else {
@@ -203,7 +194,7 @@ public class Home extends Activity implements NavigationDrawerFragment.Navigatio
         }
     }
 
-    public void updateCurrentBgInfo() {
+    private void updateCurrentBgInfo() {
         final TextView notificationText = (TextView)findViewById(R.id.notices);
         notificationText.setText("");
         isBTWixel = CollectionServiceStarter.isBTWixel(getApplicationContext());
@@ -245,7 +236,7 @@ public class Home extends Activity implements NavigationDrawerFragment.Navigatio
                         if (BgReading.latest(2).size() > 1) {
                             List<Calibration> calibrations = Calibration.latest(2);
                             if (calibrations.size() > 1) {
-                                if (calibrations.get(0).possible_bad != null && calibrations.get(0).possible_bad == true && calibrations.get(1).possible_bad != null && calibrations.get(1).possible_bad != true) {
+                                if (calibrations.get(0).possible_bad != null && calibrations.get(0).possible_bad && calibrations.get(1).possible_bad != null && !calibrations.get(1).possible_bad) {
                                     notificationText.setText("Possible bad calibration slope, please have a glass of water, wash hands, then recalibrate in a few!");
                                 }
                                 displayCurrentInfo();
@@ -279,7 +270,7 @@ public class Home extends Activity implements NavigationDrawerFragment.Navigatio
                     if (BgReading.latest(2).size() > 1) {
                         List<Calibration> calibrations = Calibration.latest(2);
                         if (calibrations.size() > 1) {
-                            if (calibrations.get(0).possible_bad != null && calibrations.get(0).possible_bad == true && calibrations.get(1).possible_bad != null && calibrations.get(1).possible_bad != true) {
+                            if (calibrations.get(0).possible_bad != null && calibrations.get(0).possible_bad && calibrations.get(1).possible_bad != null && !calibrations.get(1).possible_bad) {
                                 notificationText.setText("Possible bad calibration slope, please have a glass of water, wash hands, then recalibrate in a few!");
                             }
                             displayCurrentInfo();
@@ -304,7 +295,7 @@ public class Home extends Activity implements NavigationDrawerFragment.Navigatio
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), menu_name, this);
     }
 
-    public void displayCurrentInfo() {
+    private void displayCurrentInfo() {
         DecimalFormat df = new DecimalFormat("#");
         df.setMaximumFractionDigits(0);
 

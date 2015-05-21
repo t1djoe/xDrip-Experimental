@@ -37,7 +37,7 @@
                     android:gravity="left|top"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:textSize="40dp"
+                    android:textSize="40sp"
                     android:text="Alerts and messages" />
 
                 <lecho.lib.hellocharts.view.LineChartView
@@ -57,8 +57,19 @@
                     android:gravity="right"
                     android:layout_alignParentEnd="true"
                     android:paddingEnd="20dp"
-                    android:textSize="100dp"
+                    android:textSize="100sp"
                     android:paddingTop="0dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="100%"
+                    android:id="@+id/textBridgeBattery"
+                    android:textStyle="normal"
+                    android:textSize="18sp"
+                    android:inputType="none"
+                    android:layout_below="@+id/notices"
+                    android:layout_alignParentStart="true" />
             </RelativeLayout>
 
             <lecho.lib.hellocharts.view.PreviewLineChartView

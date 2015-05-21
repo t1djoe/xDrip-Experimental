@@ -33,23 +33,23 @@ import java.io.IOException;
  */
 abstract class CommonUsbSerialPort implements UsbSerialPort {
 
-    public static final int DEFAULT_READ_BUFFER_SIZE = 16 * 1024;
-    public static final int DEFAULT_WRITE_BUFFER_SIZE = 16 * 1024;
+    private static final int DEFAULT_READ_BUFFER_SIZE = 16 * 1024;
+    private static final int DEFAULT_WRITE_BUFFER_SIZE = 16 * 1024;
 
-    protected final UsbDevice mDevice;
-    protected final int mPortNumber;
+    final UsbDevice mDevice;
+    private final int mPortNumber;
 
     // non-null when open()
-    protected UsbDeviceConnection mConnection = null;
+    UsbDeviceConnection mConnection = null;
 
-    protected final Object mReadBufferLock = new Object();
-    protected final Object mWriteBufferLock = new Object();
+    final Object mReadBufferLock = new Object();
+    final Object mWriteBufferLock = new Object();
 
     /** Internal read buffer.  Guarded by {@link #mReadBufferLock}. */
-    protected byte[] mReadBuffer;
+    byte[] mReadBuffer;
 
     /** Internal write buffer.  Guarded by {@link #mWriteBufferLock}. */
-    protected byte[] mWriteBuffer;
+    byte[] mWriteBuffer;
 
     public CommonUsbSerialPort(UsbDevice device, int portNumber) {
         mDevice = device;

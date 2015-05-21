@@ -8,6 +8,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by stephenblack on 11/29/14.
@@ -20,25 +21,25 @@ public class UserNotification extends Model {
     public double timestamp;
 
     @Column(name = "message")
-    public String message;
+    private String message;
 
     @Column(name = "bg_alert")
-    public boolean bg_alert;
+    private boolean bg_alert;
 
     @Column(name = "calibration_alert")
-    public boolean calibration_alert;
+    private boolean calibration_alert;
 
     @Column(name = "double_calibration_alert")
-    public boolean double_calibration_alert;
+    private boolean double_calibration_alert;
 
     @Column(name = "extra_calibration_alert")
-    public boolean extra_calibration_alert;
+    private boolean extra_calibration_alert;
 
     @Column(name = "bg_unclear_readings_alert")
-    public boolean bg_unclear_readings_alert;
+    private boolean bg_unclear_readings_alert;
 
     @Column(name = "bg_missed_alerts")
-    public boolean bg_missed_alerts;
+    private boolean bg_missed_alerts;
 
     public static UserNotification lastBgAlert() {
         return new Select()
@@ -86,17 +87,17 @@ public class UserNotification extends Model {
         UserNotification userNotification = new UserNotification();
         userNotification.timestamp = new Date().getTime();
         userNotification.message = message;
-        if (type == "bg_alert") {
+        if (Objects.equals(type, "bg_alert")) {
             userNotification.bg_alert = true;
-        } else if (type == "calibration_alert") {
+        } else if (Objects.equals(type, "calibration_alert")) {
             userNotification.calibration_alert = true;
-        } else if (type == "double_calibration_alert") {
+        } else if (Objects.equals(type, "double_calibration_alert")) {
             userNotification.double_calibration_alert = true;
-        } else if (type == "extra_calibration_alert") {
+        } else if (Objects.equals(type, "extra_calibration_alert")) {
             userNotification.extra_calibration_alert = true;
-        } else if (type == "bg_unclear_readings_alert") {
+        } else if (Objects.equals(type, "bg_unclear_readings_alert")) {
         userNotification.bg_unclear_readings_alert = true;
-        } else if (type == "bg_missed_alerts") {
+        } else if (Objects.equals(type, "bg_missed_alerts")) {
         userNotification.bg_missed_alerts = true;
         }
         userNotification.save();

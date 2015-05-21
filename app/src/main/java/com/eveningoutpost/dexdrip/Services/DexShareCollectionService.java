@@ -19,13 +19,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.activeandroid.query.Select;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.ReadDataShare;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.CalRecord;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.EGVRecord;
@@ -39,15 +36,12 @@ import com.eveningoutpost.dexdrip.UtilityModels.DexShareAttributes;
 import com.eveningoutpost.dexdrip.UtilityModels.ForegroundServiceStarter;
 import com.eveningoutpost.dexdrip.UtilityModels.HM10Attributes;
 
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import rx.Observable;
 import rx.functions.Action1;
@@ -82,28 +76,28 @@ public class DexShareCollectionService extends Service {
     private BluetoothGattCharacteristic mHeartBeatCharacteristic;
 
     //Gatt Tasks
-    public final int GATT_NOTHING = 0;
-    public final int GATT_SETUP = 1;
-    public final int GATT_WRITING_COMMANDS = 2;
+    private final int GATT_NOTHING = 0;
+    private final int GATT_SETUP = 1;
+    private final int GATT_WRITING_COMMANDS = 2;
     public final int GATT_READING_RESPONSE = 3;
-    public int successfulWrites;
+    private int successfulWrites;
 
     //RXJAVA FUN
-    Action1<byte[]> mDataResponseListener;
-    public int currentGattTask;
-    public int step;
-    public List<byte[]> writePackets;
-    public int recordType;
-    SharedPreferences prefs;
-    ReadDataShare readData;
+    private Action1<byte[]> mDataResponseListener;
+    private int currentGattTask;
+    private int step;
+    private List<byte[]> writePackets;
+    private int recordType;
+    private SharedPreferences prefs;
+    private ReadDataShare readData;
 
-    public boolean state_authSucess = false;
-    public boolean state_authInProgress = false;
-    public boolean state_notifSetupSucess = false;
+    private boolean state_authSucess = false;
+    private boolean state_authInProgress = false;
+    private boolean state_notifSetupSucess = false;
 
-    public boolean shouldDisconnect = false;
-    public boolean share2 = false;
-    public Service service;
+    private boolean shouldDisconnect = false;
+    private boolean share2 = false;
+    private Service service;
 
     @Override
     public void onCreate() {
@@ -149,7 +143,7 @@ public class DexShareCollectionService extends Service {
         Log.w(TAG, "SERVICE STOPPED");
     }
 
-    public SharedPreferences.OnSharedPreferenceChangeListener prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+    private SharedPreferences.OnSharedPreferenceChangeListener prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
             if(key.compareTo("run_service_in_foreground") == 0) {
                 Log.e("FOREGROUND", "run_service_in_foreground changed!");
@@ -165,11 +159,11 @@ public class DexShareCollectionService extends Service {
         }
     };
 
-    public void listenForChangeInSettings() {
+    private void listenForChangeInSettings() {
         prefs.registerOnSharedPreferenceChangeListener(prefListener);
     }
 
-    public void setRetryTimer() {
+    private void setRetryTimer() {
         if (CollectionServiceStarter.isBTShare(getApplicationContext())) {
             BgReading bgReading = BgReading.last();
             long retry_in;
@@ -185,7 +179,7 @@ public class DexShareCollectionService extends Service {
         }
     }
 
-    public void setFailoverTimer() { //Sometimes it gets stuck in limbo on 4.4, this should make it try again
+    private void setFailoverTimer() { //Sometimes it gets stuck in limbo on 4.4, this should make it try again
         if (CollectionServiceStarter.isBTShare(getApplicationContext())) {
             long retry_in = (1000 * 60 * 5);
             Log.d(TAG, "Fallover Restarting in: " + (retry_in / (60 * 1000)) + " minutes");
@@ -202,7 +196,7 @@ public class DexShareCollectionService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    public void attemptConnection() {
+    private void attemptConnection() {
         mBluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         if (mBluetoothManager != null) {
             if (device != null) {
@@ -247,7 +241,7 @@ public class DexShareCollectionService extends Service {
         }
     }
 
-    public void attemptRead() {
+    private void attemptRead() {
         Log.d(TAG, "Attempting to read data");
         final Action1<Long> systemTimeListener = new Action1<Long>() {
             @Override
@@ -312,7 +306,7 @@ public class DexShareCollectionService extends Service {
         readData.readSystemTime(systemTimeListener);
     }
 
-    public boolean connect(final String address) {
+    private boolean connect(final String address) {
         Log.w(TAG, "going to connect to device at address" + address);
         if (mBluetoothAdapter == null || address == null) {
             Log.w(TAG, "BluetoothAdapter not initialized or unspecified address.");
@@ -346,7 +340,7 @@ public class DexShareCollectionService extends Service {
         return true;
     }
 
-    public void authenticateConnection() {
+    private void authenticateConnection() {
         Log.w(TAG, "Trying to auth");
         String receiverSn = prefs.getString("share_key", "SM00000000").toUpperCase() + "000000";
         if(receiverSn.compareTo("SM00000000000000") == 0) { // They havnt set their serial number, dont bond!
@@ -380,7 +374,7 @@ public class DexShareCollectionService extends Service {
         }
     }
 
-    public void assignCharacteristics() {
+    private void assignCharacteristics() {
         if(!share2) {
             Log.d(TAG, "Setting #1 characteristics");
             mSendDataCharacteristic = mShareService.getCharacteristic(DexShareAttributes.ShareMessageReceiver);
@@ -398,7 +392,7 @@ public class DexShareCollectionService extends Service {
         }
     }
 
-    public void setListeners(int listener_number) {
+    private void setListeners(int listener_number) {
         Log.w(TAG, "Setting Listener: #" + listener_number);
         if (listener_number == 1) {
             step = 2;
@@ -410,7 +404,7 @@ public class DexShareCollectionService extends Service {
     }
 
 
-    public void close() {
+    private void close() {
         if (mBluetoothGatt == null) {
             return;
         }
@@ -421,11 +415,11 @@ public class DexShareCollectionService extends Service {
         Log.w(TAG, "bt Disconnected");
     }
 
-    public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic) {
+    private void setCharacteristicNotification(BluetoothGattCharacteristic characteristic) {
         setCharacteristicNotification(characteristic, true);
     }
 
-    public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enabled) {
+    private void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enabled) {
         Log.w(TAG, "Characteristic setting notification");
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(HM10Attributes.CLIENT_CHARACTERISTIC_CONFIG));
@@ -434,11 +428,11 @@ public class DexShareCollectionService extends Service {
         mBluetoothGatt.writeDescriptor(descriptor);
     }
 
-    public void setCharacteristicIndication(BluetoothGattCharacteristic characteristic) {
+    private void setCharacteristicIndication(BluetoothGattCharacteristic characteristic) {
         setCharacteristicIndication(characteristic, true);
     }
 
-    public void setCharacteristicIndication(BluetoothGattCharacteristic characteristic, boolean enabled) {
+    private void setCharacteristicIndication(BluetoothGattCharacteristic characteristic, boolean enabled) {
         Log.w(TAG, "Characteristic setting indication");
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(HM10Attributes.CLIENT_CHARACTERISTIC_CONFIG));
@@ -457,7 +451,7 @@ public class DexShareCollectionService extends Service {
         gattWritingStep();
     }
 
-    public void clearGattTask() {
+    private void clearGattTask() {
         currentGattTask = GATT_NOTHING;
         step = 0;
     }
@@ -472,7 +466,7 @@ public class DexShareCollectionService extends Service {
         Log.d(TAG, "Writing command to the Gatt, step: " + step);
         int index = step;
         if (index <= (writePackets.size() - 1)) {
-            Log.d(TAG, "Writing: " + writePackets.get(index) + " index: " + index);
+            Log.d(TAG, "Writing: " + Arrays.toString(writePackets.get(index)) + " index: " + index);
             if(mSendDataCharacteristic != null && writePackets != null) {
                 mSendDataCharacteristic.setValue(writePackets.get(index));
                 if (mBluetoothGatt.writeCharacteristic(mSendDataCharacteristic)) {
@@ -574,7 +568,7 @@ public class DexShareCollectionService extends Service {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 Log.v(TAG, "Characteristic Read " + characteristic.getUuid());
                 if(mHeartBeatCharacteristic.getUuid().equals(characteristic.getUuid())) {
-                    Log.v(TAG, "Characteristic Read " + characteristic.getUuid() + " " + characteristic.getValue());
+                    Log.v(TAG, "Characteristic Read " + characteristic.getUuid() + " " + Arrays.toString(characteristic.getValue()));
                     setCharacteristicNotification(mHeartBeatCharacteristic);
                 }
                 mBluetoothGatt.readCharacteristic(mHeartBeatCharacteristic);
@@ -647,7 +641,7 @@ public class DexShareCollectionService extends Service {
         }
     };
 
-    public void bondDevice() {
+    private void bondDevice() {
         final IntentFilter bondintent = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mPairReceiver, bondintent);
         if(!share2){ device.setPin("000000".getBytes()); }

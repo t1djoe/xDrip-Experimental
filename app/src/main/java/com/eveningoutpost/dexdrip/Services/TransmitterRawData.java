@@ -11,20 +11,20 @@ public class TransmitterRawData {
 
     public String Id;
     public int TransmissionId;
-    public String TransmitterId;
+    private String TransmitterId;
     public int RawValue;
     public int FilteredValue;
     public int BatteryLife;
-    public int ReceivedSignalStrength;
+    private int ReceivedSignalStrength;
     public long CaptureDateTime;
     public int Uploaded;
-    public int UploadAttempts;
-    public int UploaderBatteryLife;
+    private int UploadAttempts;
+    private int UploaderBatteryLife;
     // When sending set this value to the relative time...
     // The time between the capture and now...
     public long RelativeTime;
 
-    public int getTransmissionId() {
+    private int getTransmissionId() {
         return TransmissionId;
     }
 
@@ -32,7 +32,7 @@ public class TransmitterRawData {
         TransmissionId = transmissionId;
     }
 
-    public int getUploaded() {
+    private int getUploaded() {
         return Uploaded;
     }
 
@@ -48,7 +48,7 @@ public class TransmitterRawData {
         UploadAttempts = uploadAttempts;
     }
 
-    public int getUploaderBatteryLife() {
+    private int getUploaderBatteryLife() {
         return UploaderBatteryLife;
     }
 
@@ -56,7 +56,7 @@ public class TransmitterRawData {
         UploaderBatteryLife = uploaderBatteryLife;
     }
 
-    public int getBatteryLife() {
+    private int getBatteryLife() {
         return BatteryLife;
     }
 
@@ -64,7 +64,7 @@ public class TransmitterRawData {
         BatteryLife = batteryLife;
     }
 
-    public int getReceivedSignalStrength() {
+    private int getReceivedSignalStrength() {
         return ReceivedSignalStrength;
     }
 
@@ -72,7 +72,7 @@ public class TransmitterRawData {
         ReceivedSignalStrength = receivedSignalStrength;
     }
 
-    public String getTransmitterId() {
+    private String getTransmitterId() {
         return TransmitterId;
     }
 
@@ -80,7 +80,7 @@ public class TransmitterRawData {
         TransmitterId = transmitterId;
     }
 
-    public int getRawValue() {
+    private int getRawValue() {
         return RawValue;
     }
 
@@ -88,7 +88,7 @@ public class TransmitterRawData {
         RawValue = rawValue;
     }
 
-    public int getFilteredValue() {
+    private int getFilteredValue() {
         return FilteredValue;
     }
 
@@ -96,7 +96,7 @@ public class TransmitterRawData {
         FilteredValue = filteredValue;
     }
 
-    public long getCaptureDateTime() {
+    private long getCaptureDateTime() {
         return CaptureDateTime;
     }
 

@@ -3,26 +3,19 @@ package com.eveningoutpost.dexdrip.Services;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.eveningoutpost.dexdrip.Models.BgReading;
-import com.eveningoutpost.dexdrip.Models.Calibration;
 import com.eveningoutpost.dexdrip.UtilityModels.BgSendQueue;
 import com.eveningoutpost.dexdrip.UtilityModels.CalibrationSendQueue;
 import com.eveningoutpost.dexdrip.UtilityModels.MongoSendTask;
-import com.eveningoutpost.dexdrip.UtilityModels.NightscoutUploader;
 import com.eveningoutpost.dexdrip.UtilityModels.RestCalls;
 import com.eveningoutpost.dexdrip.UtilityModels.SensorSendQueue;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class SyncService extends IntentService {
     int mStartMode;
@@ -42,7 +35,7 @@ public class SyncService extends IntentService {
         attemptSend();
     }
 
-    public void attemptSend() {
+    private void attemptSend() {
         mContext = getApplicationContext();
         prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         enableRESTUpload = prefs.getBoolean("cloud_storage_api_enable", false);
@@ -64,13 +57,13 @@ public class SyncService extends IntentService {
         setRetryTimer();
     }
 
-    public void setRetryTimer() {
+    private void setRetryTimer() {
         Calendar calendar = Calendar.getInstance();
         AlarmManager alarm = (AlarmManager)getSystemService(ALARM_SERVICE);
         alarm.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + (1000 * 30 * 5), PendingIntent.getService(this, 0, new Intent(this, SyncService.class), 0));
     }
 
-    public void syncToMogoDb() {
+    private void syncToMogoDb() {
         MongoSendTask task = new MongoSendTask(getApplicationContext());
         task.execute();
     }

@@ -11,12 +11,9 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
-import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.CalSubrecord;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.EGVRecord;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.SensorRecord;
 import com.eveningoutpost.dexdrip.Sensor;
-import com.eveningoutpost.dexdrip.Services.DexShareCollectionService;
-import com.eveningoutpost.dexdrip.Services.MissedReadingService;
 import com.eveningoutpost.dexdrip.UtilityModels.BgSendQueue;
 import com.eveningoutpost.dexdrip.UtilityModels.Constants;
 import com.eveningoutpost.dexdrip.UtilityModels.Notifications;
@@ -37,10 +34,10 @@ public class BgReading extends Model {
     private final static String TAG = BgReading.class.getSimpleName();
     private final static String TAG_ALERT = TAG +" AlertBg";
     //TODO: Have these as adjustable settings!!
-    public final static double BESTOFFSET = (60000 * 0); // Assume readings are about x minutes off from actual!
+    private final static double BESTOFFSET = (60000 * 0); // Assume readings are about x minutes off from actual!
 
     @Column(name = "sensor", index = true)
-    public Sensor sensor;
+    private Sensor sensor;
 
     @Column(name = "calibration", index = true)
     public Calibration calibration;
@@ -51,7 +48,7 @@ public class BgReading extends Model {
 
     @Expose
     @Column(name = "time_since_sensor_started")
-    public double time_since_sensor_started;
+    private double time_since_sensor_started;
 
     @Expose
     @Column(name = "raw_data")
@@ -79,38 +76,38 @@ public class BgReading extends Model {
 
     @Expose
     @Column(name = "a")
-    public double a;
+    private double a;
 
     @Expose
     @Column(name = "b")
-    public double b;
+    private double b;
 
     @Expose
     @Column(name = "c")
-    public double c;
+    private double c;
 
     @Expose
     @Column(name = "ra")
-    public double ra;
+    private double ra;
 
     @Expose
     @Column(name = "rb")
-    public double rb;
+    private double rb;
 
     @Expose
     @Column(name = "rc")
-    public double rc;
+    private double rc;
     @Expose
     @Column(name = "uuid", index = true)
     public String uuid;
 
     @Expose
     @Column(name = "calibration_uuid")
-    public String calibration_uuid;
+    private String calibration_uuid;
 
     @Expose
     @Column(name = "sensor_uuid", index = true)
-    public String sensor_uuid;
+    private String sensor_uuid;
 
     @Column(name = "snyced")
     public boolean synced;
@@ -122,13 +119,13 @@ public class BgReading extends Model {
     public boolean hide_slope;
 
     @Column(name = "noise")
-    public String noise;
+    private String noise;
 
-    public double calculated_value_mmol() {
+    private double calculated_value_mmol() {
         return mmolConvert(calculated_value);
     }
 
-    public double mmolConvert(double mgdl) {
+    private double mmolConvert(double mgdl) {
         return mgdl * Constants.MGDL_TO_MMOLL;
     }
 
@@ -153,7 +150,7 @@ public class BgReading extends Model {
         }
     }
 
-    public static double activeSlope() {
+    private static double activeSlope() {
         BgReading bgReading = BgReading.lastNoSenssor();
         if (bgReading != null) {
             double slope = (2 * bgReading.a * (new Date().getTime() + BESTOFFSET)) + bgReading.b;
@@ -183,7 +180,7 @@ public class BgReading extends Model {
         for(SensorRecord sensorRecord : sensorRecords) { BgReading.create(sensorRecord, addativeOffset, context); }
     }
 
-    public static void create(SensorRecord sensorRecord, long addativeOffset, Context context) {
+    private static void create(SensorRecord sensorRecord, long addativeOffset, Context context) {
         Log.w(TAG, "create: gonna make some sensor records: " + sensorRecord.getUnfiltered());
         if(BgReading.is_new(sensorRecord, addativeOffset)) {
             BgReading bgReading = new BgReading();
@@ -207,7 +204,7 @@ public class BgReading extends Model {
         }
     }
 
-    public static void create(EGVRecord egvRecord, long addativeOffset, Context context) {
+    private static void create(EGVRecord egvRecord, long addativeOffset, Context context) {
         BgReading bgReading = BgReading.getForTimestamp(egvRecord.getSystemTime().getTime() + addativeOffset);
         Log.w(TAG, "create: Looking for BG reading to tag this thing to: " + egvRecord.getBGValue());
         if(bgReading != null) {
@@ -234,7 +231,7 @@ public class BgReading extends Model {
         }
     }
 
-    public static BgReading getForTimestamp(double timestamp) {
+    private static BgReading getForTimestamp(double timestamp) {
         Sensor sensor = Sensor.currentSensor();
         if(sensor != null) {
             BgReading bgReading = new Select()
@@ -254,7 +251,7 @@ public class BgReading extends Model {
         return null;
     }
 
-    public static boolean is_new(SensorRecord sensorRecord, long addativeOffset) {
+    private static boolean is_new(SensorRecord sensorRecord, long addativeOffset) {
         double timestamp = sensorRecord.getSystemTime().getTime() + addativeOffset;
         Sensor sensor = Sensor.currentSensor();
         if(sensor != null) {
@@ -318,7 +315,7 @@ public class BgReading extends Model {
                 } else {
                     BgReading lastBgReading = BgReading.last();
                     if (lastBgReading != null && lastBgReading.calibration != null) {
-                        if (lastBgReading.calibration_flag == true && ((lastBgReading.timestamp + (60000 * 20)) > bgReading.timestamp) && ((lastBgReading.calibration.timestamp + (60000 * 20)) > bgReading.timestamp)) {
+                        if (lastBgReading.calibration_flag && ((lastBgReading.timestamp + (60000 * 20)) > bgReading.timestamp) && ((lastBgReading.calibration.timestamp + (60000 * 20)) > bgReading.timestamp)) {
                             lastBgReading.calibration.rawValueOverride(BgReading.weightedAverageRaw(lastBgReading.timestamp, bgReading.timestamp, lastBgReading.calibration.timestamp, lastBgReading.age_adjusted_raw_value, bgReading.age_adjusted_raw_value), context);
                         }
                     }
@@ -388,7 +385,7 @@ public class BgReading extends Model {
         return arrow;
     }
 
-    public double slopefromName(String slope_name) {
+    private double slopefromName(String slope_name) {
         double slope_by_minute = 0;
         if (slope_name.compareTo("DoubleDown") == 0) {
             slope_by_minute = -3.5;
@@ -517,13 +514,13 @@ public class BgReading extends Model {
     }
 
     //*******INSTANCE METHODS***********//
-    public void perform_calculations() {
+    private void perform_calculations() {
         find_new_curve();
         find_new_raw_curve();
         find_slope();
     }
 
-    public void find_slope() {
+    private void find_slope() {
         List<BgReading> last_2 = BgReading.latest(2);
         if (last_2.size() == 2) {
             BgReading second_latest = last_2.get(1);
@@ -597,7 +594,7 @@ public class BgReading extends Model {
         }
     }
 
-    public void calculateAgeAdjustedRawValue(){
+    private void calculateAgeAdjustedRawValue(){
         double adjust_for = (86400000 * 1.9) - time_since_sensor_started;
         if (adjust_for > 0) {
             age_adjusted_raw_value = (((.45) * (adjust_for / (86400000 * 1.9))) * raw_data) + raw_data;
@@ -656,13 +653,13 @@ public class BgReading extends Model {
             save();
         }
     }
-    public static double weightedAverageRaw(double timeA, double timeB, double calibrationTime, double rawA, double rawB) {
+    private static double weightedAverageRaw(double timeA, double timeB, double calibrationTime, double rawA, double rawB) {
         double relativeSlope = (rawB -  rawA)/(timeB - timeA);
         double relativeIntercept = rawA - (relativeSlope * timeA);
         return ((relativeSlope * calibrationTime) + relativeIntercept);
     }
 
-    public String toS() {
+    private String toS() {
         Gson gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
                 .registerTypeAdapter(Date.class, new DateTypeAdapter())
@@ -694,7 +691,7 @@ public class BgReading extends Model {
      * interstingTime is the period to check. That is if the last period is bad, we want to know how long does it go bad...
      * */
 
-    static final int MAX_INFLUANCE = 30 * 60000; // A bad point means data is untrusted for 30 minutes.
+    private static final int MAX_INFLUANCE = 30 * 60000; // A bad point means data is untrusted for 30 minutes.
     private static Long getUnclearTimeHelper(List<BgReading> latest, Long interstingTime, final Long now) {
 
         // The code ignores missing points (that is they some times are treated as good and some times as bad.
@@ -765,7 +762,7 @@ public class BgReading extends Model {
     }
 
     // the input of this function is a string. each char can be g(=good) or b(=bad) or s(=skip, point unmissed).
-    static List<BgReading> createlatestTest(String input, Long now) {
+    private static List<BgReading> createlatestTest(String input, Long now) {
         List<BgReading> out = new LinkedList<BgReading> ();
         char[] chars=  input.toCharArray();
         for(int i=0; i < chars.length; i++) {
@@ -785,7 +782,7 @@ public class BgReading extends Model {
 
 
     }
-    static void TestgetUnclearTime(String input, Long interstingTime, Long expectedResult) {
+    private static void TestgetUnclearTime(String input, Long interstingTime, Long expectedResult) {
         final Long now = new Date().getTime();
         List<BgReading> readings = createlatestTest(input, now);
         Long result = getUnclearTimeHelper(readings, interstingTime * 60000, now);

@@ -12,20 +12,20 @@ import java.util.Date;
 
 public class GenericTimestampRecord {
 
-    protected final int OFFSET_SYS_TIME = 0;
-    protected final int OFFSET_DISPLAY_TIME = 4;
-    protected Date systemTime;
-    protected int systemTimeSeconds;
-    protected Date displayTime;
+    private final int OFFSET_SYS_TIME = 0;
+    private final int OFFSET_DISPLAY_TIME = 4;
+    private Date systemTime;
+    private int systemTimeSeconds;
+    private Date displayTime;
 
-    public GenericTimestampRecord(byte[] packet) {
+    GenericTimestampRecord(byte[] packet) {
         systemTimeSeconds = ByteBuffer.wrap(packet).order(ByteOrder.LITTLE_ENDIAN).getInt(OFFSET_SYS_TIME);
         systemTime = Utils.receiverTimeToDate(systemTimeSeconds);
         int dt = ByteBuffer.wrap(packet).order(ByteOrder.LITTLE_ENDIAN).getInt(OFFSET_DISPLAY_TIME);
         displayTime = Utils.receiverTimeToDate(dt);
     }
 
-    public GenericTimestampRecord(Date displayTime, Date systemTime){
+    GenericTimestampRecord(Date displayTime, Date systemTime){
         this.displayTime=displayTime;
         this.systemTime=systemTime;
     }
@@ -41,7 +41,7 @@ public class GenericTimestampRecord {
     public Date getDisplayTime() {
         return displayTime;
     }
-    public long getDisplayTimeSeconds() {
+    long getDisplayTimeSeconds() {
         return displayTime.getTime();
     }
 

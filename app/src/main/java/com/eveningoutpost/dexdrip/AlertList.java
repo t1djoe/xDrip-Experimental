@@ -1,7 +1,6 @@
 package com.eveningoutpost.dexdrip;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,23 +10,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.eveningoutpost.dexdrip.Models.ActiveBgAlert;
 import com.eveningoutpost.dexdrip.Models.AlertType;
 import com.eveningoutpost.dexdrip.UtilityModels.AlertPlayer;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,29 +28,29 @@ import java.util.List;
 
 
 public class AlertList extends Activity {
-    ListView listViewLow;
-    ListView listViewHigh;
-    Button createLowAlert;
-    Button createHighAlert;
-    boolean doMgdl;
-    Context mContext;
-    final int ADD_ALERT = 1;
-    final int EDIT_ALERT = 2;
-    SharedPreferences prefs;
+    private ListView listViewLow;
+    private ListView listViewHigh;
+    private Button createLowAlert;
+    private Button createHighAlert;
+    private boolean doMgdl;
+    private Context mContext;
+    private final int ADD_ALERT = 1;
+    private final int EDIT_ALERT = 2;
+    private SharedPreferences prefs;
 
     private final static String TAG = AlertPlayer.class.getSimpleName();
 
-    String stringTimeFromAlert(AlertType alert) {
+    private String stringTimeFromAlert(AlertType alert) {
         if(alert.all_day) { return "all day"; }
         String start = timeFormatString(AlertType.time2Hours(alert.start_time_minutes), AlertType.time2Minutes(alert.start_time_minutes));
         String end = timeFormatString(AlertType.time2Hours(alert.end_time_minutes), AlertType.time2Minutes(alert.end_time_minutes));
         return start + " - " + end;
     }
 
-    HashMap<String, String> createAlertMap(AlertType alert) {
+    private HashMap<String, String> createAlertMap(AlertType alert) {
         HashMap<String, String> map = new HashMap<String, String>();
         String overrideSilentMode = "Override Silent Mode";
-        if(alert.override_silent_mode == false) {
+        if(!alert.override_silent_mode) {
             overrideSilentMode = "No Alert in Silent Mode";
         }
 
@@ -73,7 +64,7 @@ public class AlertList extends Activity {
         return map;
     }
 
-    ArrayList<HashMap<String, String>> createAlertsMap(boolean above) {
+    private ArrayList<HashMap<String, String>> createAlertsMap(boolean above) {
         ArrayList<HashMap<String, String>> feedList= new ArrayList<HashMap<String, String>>();
 
         List<AlertType> alerts = AlertType.getAll(above);
@@ -85,7 +76,7 @@ public class AlertList extends Activity {
     }
 
 
-    class AlertsOnItemLongClickListener implements AdapterView.OnItemLongClickListener {
+    private class AlertsOnItemLongClickListener implements AdapterView.OnItemLongClickListener {
         //      @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             ListView lv = (ListView)parent;
@@ -122,7 +113,7 @@ public class AlertList extends Activity {
     }
 
 
-    public void addListenerOnButton() {
+    private void addListenerOnButton() {
         createLowAlert = (Button)findViewById(R.id.button_create_low);
         createHighAlert = (Button)findViewById(R.id.button_create_high);
 
@@ -158,7 +149,7 @@ public class AlertList extends Activity {
         }
     }
 
-    void FillLists() {
+    private void FillLists() {
         ArrayList<HashMap<String, String>> feedList;
         feedList = createAlertsMap(false);
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, feedList, R.layout.row_alerts, new String[]{"alertName", "alertThreshold", "alertTime", "alertMp3File", "alertOverrideSilenceMode"}, new int[]{R.id.alertName, R.id.alertThreshold, R.id.alertTime, R.id.alertMp3File, R.id.alertOverrideSilent});
@@ -169,7 +160,7 @@ public class AlertList extends Activity {
         listViewHigh.setAdapter(simpleAdapterHigh);
     }
 
-    public String shortPath(String path) {
+    private String shortPath(String path) {
 
         if(path != null) {
             if(path.length() == 0) {
@@ -188,7 +179,7 @@ public class AlertList extends Activity {
         return "";
     }
 
-    public String timeFormatString(int Hour, int Minute) {
+    private String timeFormatString(int Hour, int Minute) {
         SimpleDateFormat timeFormat24 = new SimpleDateFormat("HH:mm");
         String selected = Hour+":"+Minute;
         if (!android.text.format.DateFormat.is24HourFormat(mContext)) {

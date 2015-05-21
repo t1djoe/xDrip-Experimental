@@ -17,7 +17,7 @@ import com.google.gson.annotations.Expose;
  */
 @Table(name = "ShareGlucose", id = BaseColumns._ID)
 public class ShareGlucose extends Model {
-    public Context mContext;
+    private Context mContext;
     @Expose
     @Column(name = "DT")
     public String DT;
@@ -28,7 +28,7 @@ public class ShareGlucose extends Model {
 
     @Expose
     @Column(name = "Trend")
-    public double Trend;
+    private double Trend;
 
     @Expose
     @Column(name = "Value")

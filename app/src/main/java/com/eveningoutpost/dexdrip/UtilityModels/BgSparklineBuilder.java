@@ -1,6 +1,5 @@
 package com.eveningoutpost.dexdrip.UtilityModels;
 
-import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -48,7 +47,7 @@ public class BgSparklineBuilder {
         return this;
     }
 
-    public BgSparklineBuilder showHighLine(boolean show) {
+    private BgSparklineBuilder showHighLine(boolean show) {
         this.showHighLine = show;
         return this;
     }
@@ -57,7 +56,7 @@ public class BgSparklineBuilder {
         return showHighLine(true);
     }
 
-    public BgSparklineBuilder showLowLine(boolean show) {
+    private BgSparklineBuilder showLowLine(boolean show) {
         this.showLowLine = show;
         return this;
     }
@@ -66,7 +65,7 @@ public class BgSparklineBuilder {
         return showLowLine(true);
     }
 
-    public BgSparklineBuilder showAxes(boolean show) {
+    private BgSparklineBuilder showAxes(boolean show) {
         this.showAxes = show;
         return this;
     }
@@ -95,7 +94,7 @@ public class BgSparklineBuilder {
         return this;
     }
 
-    public BgSparklineBuilder setSmallDots(boolean useSmallDots) {
+    private BgSparklineBuilder setSmallDots(boolean useSmallDots) {
         this.useSmallDots = useSmallDots;
         return this;
     }

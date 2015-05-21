@@ -29,7 +29,7 @@ import retrofit.converter.GsonConverter;
 public class User extends Model {
     private static final String baseUrl = "http://10.0.2.2:3000";
 
-    public static Gson gson = new GsonBuilder()
+    private static Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapter(Date.class, new DateTypeAdapter())
             .create();
@@ -48,7 +48,7 @@ public class User extends Model {
 
     @Expose
     @Column(name = "token_expiration")
-    public double token_expiration;
+    private double token_expiration;
 
     @Expose
     @Column(name = "uuid", index = true)
@@ -87,14 +87,14 @@ public class User extends Model {
         );
     }
 
-    public static UserInterface userInterface() {
+    private static UserInterface userInterface() {
         RestAdapter adapter = adapterBuilder().build();
         UserInterface userInterface =
                 adapter.create(UserInterface.class);
         return userInterface();
     }
 
-    public static RestAdapter.Builder adapterBuilder() {
+    private static RestAdapter.Builder adapterBuilder() {
         RestAdapter.Builder adapterBuilder = new RestAdapter.Builder();
         adapterBuilder
                 .setEndpoint(baseUrl)

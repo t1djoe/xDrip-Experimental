@@ -29,20 +29,20 @@ public class PebbleSync extends Service {
     //    CGM_DLTA_KEY = 0x4,		// TUPLE_CSTRING, MAX 5 BYTES (BG DELTA, -100 or -10.0)
     //    CGM_UBAT_KEY = 0x5,		// TUPLE_CSTRING, MAX 3 BYTES (UPLOADER BATTERY, 100)
     //    CGM_NAME_KEY = 0x6		// TUPLE_CSTRING, MAX 9 BYTES (xDrip)
-    public static final UUID PEBBLEAPP_UUID = UUID.fromString("2c3f5ab3-7506-44e7-b8d0-2c63de32e1ec");
-    public static final int ICON_KEY = 0;
-    public static final int BG_KEY = 1;
-    public static final int RECORD_TIME_KEY = 2;
-    public static final int PHONE_TIME_KEY = 3;
-    public static final int BG_DELTA_KEY = 4;
-    public static final int UPLOADER_BATTERY_KEY = 5;
-    public static final int NAME_KEY = 6;
+    private static final UUID PEBBLEAPP_UUID = UUID.fromString("2c3f5ab3-7506-44e7-b8d0-2c63de32e1ec");
+    private static final int ICON_KEY = 0;
+    private static final int BG_KEY = 1;
+    private static final int RECORD_TIME_KEY = 2;
+    private static final int PHONE_TIME_KEY = 3;
+    private static final int BG_DELTA_KEY = 4;
+    private static final int UPLOADER_BATTERY_KEY = 5;
+    private static final int NAME_KEY = 6;
 
     private Context mContext;
     private BgGraphBuilder bgGraphBuilder;
     private BgReading mBgReading;
     private static int lastTransactionId;
-    BroadcastReceiver newSavedBgReceiver;
+    private BroadcastReceiver newSavedBgReceiver;
 
     @Override
     public void onCreate() {
@@ -94,7 +94,7 @@ public class PebbleSync extends Service {
         });
     }
 
-    public PebbleDictionary buildDictionary() {
+    private PebbleDictionary buildDictionary() {
         PebbleDictionary dictionary = new PebbleDictionary();
         TimeZone tz = TimeZone.getDefault();
         Date now = new Date();
@@ -115,22 +115,22 @@ public class PebbleSync extends Service {
         return dictionary;
     }
 
-    public String bridgeBatteryString() {
+    private String bridgeBatteryString() {
         return String.format("%d", PreferenceManager.getDefaultSharedPreferences(mContext).getInt("bridge_battery", 0));
     }
 
-    public void sendData(){
+    private void sendData(){
         mBgReading = BgReading.last();
         if(mBgReading != null) {
             sendDownload(buildDictionary());
         }
     }
 
-    public String bgReading() {
+    private String bgReading() {
         return bgGraphBuilder.unitized_string(mBgReading.calculated_value);
     }
 
-    public String bgDelta() {
+    private String bgDelta() {
         String deltaString;
         if((PreferenceManager.getDefaultSharedPreferences(mContext).getString("units","mg/dl").compareTo("mg/dl") == 0)) {
             deltaString = String.format("%.0f", mBgReading.calculated_value_slope * 360000);
@@ -145,7 +145,7 @@ public class PebbleSync extends Service {
         }
     }
 
-    public String phoneBattery() {
+    private String phoneBattery() {
         return String.valueOf(getBatteryLevel());
     }
 
@@ -153,7 +153,7 @@ public class PebbleSync extends Service {
         return bgGraphBuilder.unit();
     }
 
-    public void sendDownload(PebbleDictionary dictionary) {
+    private void sendDownload(PebbleDictionary dictionary) {
         if (PebbleKit.isWatchConnected(mContext)) {
             if (dictionary != null && mContext != null) {
                 Log.d(TAG, "sendDownload: Sending data to pebble");
@@ -162,7 +162,7 @@ public class PebbleSync extends Service {
         }
     }
 
-    public int getBatteryLevel() {
+    private int getBatteryLevel() {
         Intent batteryIntent = mContext.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
@@ -170,7 +170,7 @@ public class PebbleSync extends Service {
         return (int)(((float)level / (float)scale) * 100.0f);
     }
 
-    public String slopeOrdinal(){
+    private String slopeOrdinal(){
         double slope_by_minute = mBgReading.calculated_value_slope * 60000;
         String arrow = "0";
         if (slope_by_minute <= (-3.5)) {

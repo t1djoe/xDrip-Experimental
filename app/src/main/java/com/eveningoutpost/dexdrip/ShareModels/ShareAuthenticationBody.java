@@ -5,15 +5,15 @@ import com.google.gson.annotations.Expose;
 /**
  * Created by stephenblack on 3/16/15.
  */
-public class ShareAuthenticationBody {
+class ShareAuthenticationBody {
     @Expose
-    public String password;
+    private String password;
 
     @Expose
-    public String applicationId;
+    private String applicationId;
 
     @Expose
-    public String accountName;
+    private String accountName;
 
     public ShareAuthenticationBody(String aPassword, String aAccountName) {
         this.password = aPassword;

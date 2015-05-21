@@ -65,20 +65,16 @@
             android:label="Bg Readings Table" >
         </activity>
         <activity
-            android:name=".Tables.SensorDataTable"
-            android:label="Sensor Table" >
-        </activity>
-        <activity
             android:name=".AddCalibration"
-            android:label="@string/title_activity_add_calibration" >
+            android:label="Add Calibration" >
         </activity>
         <activity
             android:name=".StartNewSensor"
-            android:label="@string/title_activity_start_new_sensor" >
+            android:label="Start New Sensor" >
         </activity>
         <activity
             android:name=".StopSensor"
-            android:label="@string/title_activity_stop_sensor" >
+            android:label="Stop Sensor" >
         </activity>
 
         <receiver android:name=".AutoStart" >
@@ -153,10 +149,6 @@
             android:exported="true" >
         </service>
 
-        <activity
-            android:name=".ShareTest"
-            android:label="@string/title_activity_share_test" >
-        </activity>
         <activity
             android:name=".SystemStatus"
             android:label="@string/title_activity_system_status" >

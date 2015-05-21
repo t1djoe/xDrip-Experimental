@@ -6,23 +6,17 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.eveningoutpost.dexdrip.Models.ActiveBluetoothDevice;
-import com.eveningoutpost.dexdrip.Models.Calibration;
 import com.eveningoutpost.dexdrip.UtilityModels.CollectionServiceStarter;
 
 import java.lang.reflect.Method;
@@ -31,16 +25,16 @@ import java.lang.reflect.Method;
 public class SystemStatus extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private String menu_name = "System Status";
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    public TextView collection_method;
-    public TextView current_device;
-    public TextView connection_status;
-    public TextView notes;
-    public Button restart_collection_service;
-    public Button forget_device;
-    public ImageButton refresh;
-    public SharedPreferences prefs;
-    public BluetoothManager mBluetoothManager;
-    public ActiveBluetoothDevice activeBluetoothDevice;
+    private TextView collection_method;
+    private TextView current_device;
+    private TextView connection_status;
+    private TextView notes;
+    private Button restart_collection_service;
+    private Button forget_device;
+    private ImageButton refresh;
+    private SharedPreferences prefs;
+    private BluetoothManager mBluetoothManager;
+    private ActiveBluetoothDevice activeBluetoothDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +74,11 @@ public class SystemStatus extends Activity implements NavigationDrawerFragment.N
         setNotes();
     }
 
-    public void setCollectionMethod() {
+    private void setCollectionMethod() {
         collection_method.setText(prefs.getString("dex_collection_method", "BluetoothWixel"));
     }
 
-    public void setCurrentDevice() {
+    private void setCurrentDevice() {
         if(activeBluetoothDevice != null) {
             current_device.setText(activeBluetoothDevice.name);
         } else {
@@ -92,7 +86,7 @@ public class SystemStatus extends Activity implements NavigationDrawerFragment.N
         }
     }
 
-    public void setConnectionStatus() {
+    private void setConnectionStatus() {
         boolean connected = false;
         if (mBluetoothManager != null && activeBluetoothDevice != null) {
             for (BluetoothDevice bluetoothDevice : mBluetoothManager.getConnectedDevices(BluetoothProfile.GATT)) {
@@ -108,7 +102,7 @@ public class SystemStatus extends Activity implements NavigationDrawerFragment.N
         }
     }
 
-    public void setNotes() {
+    private void setNotes() {
         if(mBluetoothManager == null) {
             notes.append("\n- This device does not seem to support bluetooth");
         } else {
@@ -122,7 +116,7 @@ public class SystemStatus extends Activity implements NavigationDrawerFragment.N
         }
     }
 
-    public void restartButtonListener() {
+    private void restartButtonListener() {
         restart_collection_service.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 CollectionServiceStarter.restartCollectionService(getApplicationContext());
@@ -131,7 +125,7 @@ public class SystemStatus extends Activity implements NavigationDrawerFragment.N
         });
     }
 
-    public void forgetDeviceListener() {
+    private void forgetDeviceListener() {
         forget_device.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(mBluetoothManager != null && ActiveBluetoothDevice.first() != null) {
@@ -164,7 +158,7 @@ public class SystemStatus extends Activity implements NavigationDrawerFragment.N
         });
     }
 
-    public void refreshButtonListener() {
+    private void refreshButtonListener() {
         refresh.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 set_current_values();

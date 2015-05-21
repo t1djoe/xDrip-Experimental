@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,14 +20,14 @@ import java.util.List;
 public class StartNewSensor extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private String menu_name = "Start Sensor";
     private NavigationDrawerFragment mNavigationDrawerFragment;
-    public Button button;
-    public DatePicker dp;
-    public TimePicker tp;
+    private Button button;
+    private DatePicker dp;
+    private TimePicker tp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(Sensor.isActive() == false) {
+        if(!Sensor.isActive()) {
             setContentView(R.layout.activity_start_new_sensor);
 
             button = (Button)findViewById(R.id.startNewSensor);
@@ -67,7 +65,7 @@ public class StartNewSensor extends Activity implements NavigationDrawerFragment
 
     }
 
-    public void addListenerOnButton() {
+    private void addListenerOnButton() {
 
         button = (Button)findViewById(R.id.startNewSensor);
 

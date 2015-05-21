@@ -2,7 +2,6 @@ package com.eveningoutpost.dexdrip.UtilityModels;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.eveningoutpost.dexdrip.Models.BgReading;
 import com.eveningoutpost.dexdrip.Models.Calibration;
@@ -16,8 +15,8 @@ import java.util.List;
  */
 public class MongoSendTask extends AsyncTask<String, Void, SyncService> {
         private Context context;
-        public List<BgSendQueue> bgsQueue = new ArrayList<BgSendQueue>();
-        public List<CalibrationSendQueue> calibrationsQueue = new ArrayList<CalibrationSendQueue>();
+        private List<BgSendQueue> bgsQueue = new ArrayList<BgSendQueue>();
+        private List<CalibrationSendQueue> calibrationsQueue = new ArrayList<CalibrationSendQueue>();
 
         private Exception exception;
 

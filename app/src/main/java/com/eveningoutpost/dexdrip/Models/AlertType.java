@@ -1,6 +1,5 @@
 package com.eveningoutpost.dexdrip.Models;
 
-import android.R.bool;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,17 +11,10 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
-import com.eveningoutpost.dexdrip.Home;
-import com.eveningoutpost.dexdrip.Sensor;
 import com.eveningoutpost.dexdrip.Services.MissedReadingService;
 import com.eveningoutpost.dexdrip.UtilityModels.AlertPlayer;
 import com.eveningoutpost.dexdrip.UtilityModels.Notifications;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
-import com.google.gson.internal.bind.DateTypeAdapter;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +30,7 @@ public class AlertType extends Model {
     public String name;
 
     @Column(name = "active")
-    public boolean active;
+    private boolean active;
 
     @Column(name = "volume")
     public int volume;
@@ -53,7 +45,7 @@ public class AlertType extends Model {
     public boolean override_silent_mode;
 
     @Column(name = "predictive")
-    public boolean predictive;
+    private boolean predictive;
 
     @Column(name = "time_until_threshold_crossed")
     public double time_until_threshold_crossed;
@@ -138,7 +130,7 @@ public class AlertType extends Model {
         return at;
     }
 
-    public static void checkIfMissedReadingAlert(Context context){
+    private static void checkIfMissedReadingAlert(Context context){
         context.startService(new Intent(context, MissedReadingService.class));
     }
 
@@ -211,7 +203,7 @@ public class AlertType extends Model {
         }
     }
 
-    public static void remove_all() {
+    private static void remove_all() {
         List<AlertType> Alerts  = new Select()
         .from(AlertType.class)
         .execute();
@@ -307,7 +299,7 @@ public class AlertType extends Model {
         return name + " " + above + " " + threshold + " "+ all_day + " " +time +" " + minutes_between + " uuid" + uuid;
     }
 
-    public static void print_all() {
+    private static void print_all() {
         List<AlertType> Alerts  = new Select()
             .from(AlertType.class)
             .execute();
@@ -423,7 +415,7 @@ public class AlertType extends Model {
         return false;
     }
 
-    public boolean should_alarm(double bg) {
+    private boolean should_alarm(double bg) {
 //        Log.e(TAG, "should_alarm called active =  " + active );
         return in_time_frame() && active && (beyond_threshold(bg) || trending_to_threshold(bg));
     }

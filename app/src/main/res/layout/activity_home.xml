@@ -56,7 +56,7 @@
                     android:gravity="right"
                     android:layout_alignParentEnd="true"
                     android:paddingEnd="20dp"
-                    android:textSize="50dp"
+                    android:textSize="50sp"
                     android:paddingTop="0dp" />
 
                 <TextView

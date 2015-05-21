@@ -7,7 +7,7 @@ import java.util.Arrays;
 // Some of this code may have been modified for use in this project
 
 
-public class ReadPacket {
+class ReadPacket {
     private int command;
     private byte[] data;
     private byte[] crc_calc;

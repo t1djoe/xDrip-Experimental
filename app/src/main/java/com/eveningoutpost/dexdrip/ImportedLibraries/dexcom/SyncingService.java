@@ -1,7 +1,6 @@
 package com.eveningoutpost.dexdrip.ImportedLibraries.dexcom;
 
 import android.app.IntentService;
-import android.bluetooth.BluetoothClass;
 import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,7 +10,6 @@ import android.hardware.usb.UsbManager;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.eveningoutpost.dexdrip.ImportedLibraries.usbserial.driver.CdcAcmSerialDriver;
 import com.eveningoutpost.dexdrip.ImportedLibraries.usbserial.driver.ProbeTable;
@@ -51,14 +49,14 @@ public class SyncingService extends IntentService {
     private static final String SYNC_PERIOD = "com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.extra.SYNC_PERIOD";
 
     // Response to broadcast to activity
-    public static final String RESPONSE_SGV = "mySGV";
-    public static final String RESPONSE_TREND = "myTrend";
-    public static final String RESPONSE_TIMESTAMP = "myTimestamp";
-    public static final String RESPONSE_NEXT_UPLOAD_TIME = "myUploadTime";
-    public static final String RESPONSE_UPLOAD_STATUS = "myUploadStatus";
-    public static final String RESPONSE_DISPLAY_TIME = "myDisplayTime";
-    public static final String RESPONSE_JSON = "myJSON";
-    public static final String RESPONSE_BAT = "myBatLvl";
+    private static final String RESPONSE_SGV = "mySGV";
+    private static final String RESPONSE_TREND = "myTrend";
+    private static final String RESPONSE_TIMESTAMP = "myTimestamp";
+    private static final String RESPONSE_NEXT_UPLOAD_TIME = "myUploadTime";
+    private static final String RESPONSE_UPLOAD_STATUS = "myUploadStatus";
+    private static final String RESPONSE_DISPLAY_TIME = "myDisplayTime";
+    private static final String RESPONSE_JSON = "myJSON";
+    private static final String RESPONSE_BAT = "myBatLvl";
 
     private final String TAG = SyncingService.class.getSimpleName();
     private Context mContext;
@@ -290,7 +288,7 @@ public class SyncingService extends IntentService {
         return false;
     }
 
-    public UsbDevice findDexcom() {
+    private UsbDevice findDexcom() {
         Log.w("CALIBRATION-CHECK-IN: ", "Searching for dexcom");
         mUsbManager = (UsbManager) getApplicationContext().getSystemService(Context.USB_SERVICE);
         Log.w("USB MANAGER = ", mUsbManager.toString());

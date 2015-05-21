@@ -45,7 +45,7 @@ public class UsbSerialProber {
         return new UsbSerialProber(getDefaultProbeTable());
     }
 
-    public static ProbeTable getDefaultProbeTable() {
+    private static ProbeTable getDefaultProbeTable() {
         final ProbeTable probeTable = new ProbeTable();
         probeTable.addDriver(CdcAcmSerialDriver.class);
         probeTable.addDriver(Cp21xxSerialDriver.class);
@@ -82,7 +82,7 @@ public class UsbSerialProber {
      * @return a new {@link UsbSerialDriver} compatible with this device, or
      *         {@code null} if none available.
      */
-    public UsbSerialDriver probeDevice(final UsbDevice usbDevice) {
+    private UsbSerialDriver probeDevice(final UsbDevice usbDevice) {
         final int vendorId = usbDevice.getVendorId();
         final int productId = usbDevice.getProductId();
 

@@ -19,7 +19,7 @@ public class ActiveBluetoothDevice extends Model {
     public String address;
 
     @Column(name = "connected")
-    public boolean connected;
+    private boolean connected;
 
     public static ActiveBluetoothDevice first() {
         return new Select()

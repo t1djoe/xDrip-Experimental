@@ -3,9 +3,7 @@ package com.eveningoutpost.dexdrip;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -13,7 +11,6 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,7 +22,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.text.InputType;
-import android.text.Layout;
 import android.text.format.DateFormat;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
@@ -51,49 +47,49 @@ import com.eveningoutpost.dexdrip.R;
 
 public class EditAlertActivity extends Activity {
 
-    TextView viewHeader;
+    private TextView viewHeader;
 
-    EditText alertText;
-    EditText alertThreshold;
-    EditText alertMp3File;
-    EditText editSnooze;
+    private EditText alertText;
+    private EditText alertThreshold;
+    private EditText alertMp3File;
+    private EditText editSnooze;
 
-    Button buttonalertMp3;
+    private Button buttonalertMp3;
 
-    Button buttonSave;
-    Button buttonRemove;
-    Button buttonTest;
-    Button buttonPreSnooze;
-    CheckBox checkboxAllDay;
+    private Button buttonSave;
+    private Button buttonRemove;
+    private Button buttonTest;
+    private Button buttonPreSnooze;
+    private CheckBox checkboxAllDay;
 
-    LinearLayout layoutTimeBetween;
-    LinearLayout timeInstructions;
-    TextView viewTimeStart;
-    TextView viewTimeEnd;
+    private LinearLayout layoutTimeBetween;
+    private LinearLayout timeInstructions;
+    private TextView viewTimeStart;
+    private TextView viewTimeEnd;
 
-    int startHour = 0;
-    int startMinute = 0;
-    int endHour = 23;
-    int endMinute = 59;
+    private int startHour = 0;
+    private int startMinute = 0;
+    private int endHour = 23;
+    private int endMinute = 59;
 
-    int defaultSnooze;
+    private int defaultSnooze;
 
-    String audioPath;
+    private String audioPath;
 
-    TextView viewAlertOverrideText;
-    CheckBox checkboxAlertOverride;
-    Boolean doMgdl;
+    private TextView viewAlertOverrideText;
+    private CheckBox checkboxAlertOverride;
+    private Boolean doMgdl;
 
-    String uuid;
-    Context mContext;
-    boolean above;
-    final int CHOOSE_FILE = 1;
-    final int MIN_ALERT = 40;
-    final int MAX_ALERT = 400;
+    private String uuid;
+    private Context mContext;
+    private boolean above;
+    private final int CHOOSE_FILE = 1;
+    private final int MIN_ALERT = 40;
+    private final int MAX_ALERT = 400;
 
     private final static String TAG = AlertPlayer.class.getSimpleName();
 
-    String getExtra(Bundle savedInstanceState, String paramName) {
+    private String getExtra(Bundle savedInstanceState, String paramName) {
         String newString;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -258,7 +254,7 @@ public class EditAlertActivity extends Activity {
         }
     }
 
-    double UnitsConvertFromDisp(double threshold ) {
+    private double UnitsConvertFromDisp(double threshold) {
         if(doMgdl ) {
             return threshold;
         } else {
@@ -266,7 +262,7 @@ public class EditAlertActivity extends Activity {
         }
     }
 
-    void enableAllDayControls() {
+    private void enableAllDayControls() {
         boolean allDay = checkboxAllDay.isChecked();
         if(allDay) {
             layoutTimeBetween.setVisibility(View.GONE);
@@ -276,7 +272,7 @@ public class EditAlertActivity extends Activity {
         }
     }
 
-    void enableVibrateControls() {
+    private void enableVibrateControls() {
         boolean overrideSilence = checkboxAlertOverride.isChecked();
         if(overrideSilence) {
             checkboxAlertOverride.setText("");
@@ -333,7 +329,7 @@ public class EditAlertActivity extends Activity {
         return true;
     }
 
-    public void addListenerOnButtons() {
+    private void addListenerOnButtons() {
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -366,7 +362,7 @@ public class EditAlertActivity extends Activity {
                    timeEnd == AlertType.toTime(24, 0)) {
                     allDay = true;
                 }
-                if (timeStart == timeEnd && (allDay==false)) {
+                if (timeStart == timeEnd && (!allDay)) {
                     Toast.makeText(getApplicationContext(), "start time and end time of alert can not be equal",Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -516,7 +512,7 @@ public class EditAlertActivity extends Activity {
         }
     }
 
-    public String getPath(Uri uri) {
+    private String getPath(Uri uri) {
         String[] projection = { MediaStore.Images.Media.DATA };
         Cursor cursor = managedQuery(uri, projection, null, null, null);
         if(cursor!=null)
@@ -537,7 +533,7 @@ public class EditAlertActivity extends Activity {
         }
     }
 
-    public String timeFormatString(int Hour, int Minute) {
+    private String timeFormatString(int Hour, int Minute) {
         SimpleDateFormat timeFormat24 = new SimpleDateFormat("HH:mm");
         String selected = Hour+":"+Minute;
         if (!DateFormat.is24HourFormat(mContext)) {
@@ -552,14 +548,14 @@ public class EditAlertActivity extends Activity {
         return selected;
     }
 
-    public void setTimeRanges() {
+    private void setTimeRanges() {
         timeInstructions.setVisibility(View.VISIBLE);
         layoutTimeBetween.setVisibility(View.VISIBLE);
         viewTimeStart.setText(timeFormatString(startHour, startMinute));
         viewTimeEnd.setText(timeFormatString(endHour, endMinute));
     }
 
-    public String shortPath(String path) {
+    private String shortPath(String path) {
         if(path != null) {
             if(path.length() == 0) {
                 return "xDrip Default";
@@ -576,7 +572,7 @@ public class EditAlertActivity extends Activity {
         }
         return "";
     }
-    public void setDefaultSnoozeSpinner() {
+    private void setDefaultSnoozeSpinner() {
         editSnooze.setText(String.valueOf(defaultSnooze));
         editSnooze.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -615,7 +611,7 @@ public class EditAlertActivity extends Activity {
 
     }
 
-    public void setPreSnoozeSpinner() {
+    private void setPreSnoozeSpinner() {
 
 
         buttonPreSnooze.setOnClickListener(new View.OnClickListener() {
@@ -651,7 +647,7 @@ public class EditAlertActivity extends Activity {
 
     }
 
-    public void testAlert() {
+    private void testAlert() {
         // Check that values are ok.
         double threshold = 0;
         try {
@@ -680,7 +676,7 @@ public class EditAlertActivity extends Activity {
                 timeEnd == AlertType.toTime(24, 0)) {
             allDay = true;
         }
-        if (timeStart == timeEnd && (allDay==false)) {
+        if (timeStart == timeEnd && (!allDay)) {
             Toast.makeText(getApplicationContext(), "start time and end time of alert can not be equal",Toast.LENGTH_LONG).show();
             return;
         }

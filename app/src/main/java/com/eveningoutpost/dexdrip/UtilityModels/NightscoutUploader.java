@@ -34,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -45,7 +44,7 @@ import java.util.TimeZone;
  * A DTO would probably be a better future implementation
  * -Stephen Black
  */
-public class NightscoutUploader {
+class NightscoutUploader {
         private static final String TAG = NightscoutUploader.class.getSimpleName();
         private static final int SOCKET_TIMEOUT = 60000;
         private static final int CONNECTION_TIMEOUT = 30000;
@@ -429,7 +428,7 @@ public class NightscoutUploader {
             }
             return false;
         }
-    public int getBatteryLevel() {
+    private int getBatteryLevel() {
         Intent batteryIntent = mContext.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);

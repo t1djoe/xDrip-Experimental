@@ -2,9 +2,6 @@ package com.eveningoutpost.dexdrip;
 
 import android.app.Application;
 
-import com.crashlytics.android.Crashlytics;
-import io.fabric.sdk.android.Fabric;
-import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -40,7 +37,6 @@ public class xdrip extends Application {
     public void onCreate() {
         super.onCreate();
         //Fabric.with(this, new Crashlytics());
-        // The following line triggers the initialization of ACRA
         //ACRA.init(this);
     }
 }

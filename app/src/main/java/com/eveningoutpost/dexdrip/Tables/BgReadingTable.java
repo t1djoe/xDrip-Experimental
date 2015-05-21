@@ -2,7 +2,6 @@ package com.eveningoutpost.dexdrip.Tables;
 
 import android.app.ListActivity;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;

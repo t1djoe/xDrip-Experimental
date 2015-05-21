@@ -2,11 +2,8 @@ package com.eveningoutpost.dexdrip.ImportedLibraries.dexcom;
 
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
-import android.hardware.usb.UsbEndpoint;
-import android.hardware.usb.UsbInterface;
 import android.util.Log;
 
-import com.eveningoutpost.dexdrip.ImportedLibraries.usbserial.driver.CdcAcmSerialDriver;
 import com.eveningoutpost.dexdrip.ImportedLibraries.usbserial.driver.UsbSerialDriver;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.CalRecord;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.EGVRecord;
@@ -14,7 +11,6 @@ import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.GenericXMLRec
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.MeterRecord;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.PageHeader;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.SensorRecord;
-import com.eveningoutpost.dexdrip.ImportedLibraries.usbserial.driver.UsbSerialPort;
 
 import org.w3c.dom.Element;
 
@@ -24,9 +20,8 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
-public class ReadData {
+class ReadData {
 
 // This code and this particular library are from the NightScout android uploader
 // Check them out here: https://github.com/nightscout/android-uploader
@@ -40,7 +35,7 @@ public class ReadData {
     private UsbDeviceConnection mConnection;
     private UsbDevice mDevice;
 
-    public ReadData(){}
+    private ReadData(){}
     public ReadData(UsbSerialDriver device) {
         mSerialDevice = device;
     }
@@ -155,14 +150,14 @@ public class ReadData {
         return Utils.receiverTimeToDate(readSystemTime() + readDisplayTimeOffset());
     }
 
-    public long readSystemTime() {
+    private long readSystemTime() {
         Log.d(TAG, "Reading system time...");
         writeCommand(Constants.READ_SYSTEM_TIME);
         byte[] readData = read(MIN_LEN).getData();
         return ByteBuffer.wrap(readData).order(ByteOrder.LITTLE_ENDIAN).getInt() & 0xffffffff;
     }
 
-    public int readDisplayTimeOffset() {
+    private int readDisplayTimeOffset() {
         Log.d(TAG, "Reading display time offset...");
         writeCommand(Constants.READ_DISPLAY_TIME_OFFSET);
         byte[] readData = read(MIN_LEN).getData();

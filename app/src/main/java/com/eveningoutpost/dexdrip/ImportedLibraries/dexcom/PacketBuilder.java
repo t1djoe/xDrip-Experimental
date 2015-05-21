@@ -9,22 +9,22 @@ import java.util.List;
 // Check them out here: https://github.com/nightscout/android-uploader
 // Some of this code may have been modified for use in this project
 
-public class PacketBuilder {
-    public static final int MAX_PAYLOAD = 1584;
-    public static final int MIN_LEN = 6;
-    public static final int MAX_LEN = MAX_PAYLOAD + MIN_LEN;
-    public static final byte SOF = 0x01;
-    public static final int OFFSET_SOF = 0;
-    public static final int OFFSET_LENGTH = 1;
-    public static final int OFFSET_NULL = 2;
-    public static final byte NULL = 0x00;
-    public static final int OFFSET_CMD = 3;
-    public static final int OFFSET_PAYLOAD = 4;
-    public static final int CRC_LEN = 2;
-    public static final int HEADER_LEN = 4;
-    public ArrayList<Byte> packet;
-    public int command;
-    public ArrayList<Byte> payload;
+class PacketBuilder {
+    private static final int MAX_PAYLOAD = 1584;
+    private static final int MIN_LEN = 6;
+    private static final int MAX_LEN = MAX_PAYLOAD + MIN_LEN;
+    private static final byte SOF = 0x01;
+    private static final int OFFSET_SOF = 0;
+    private static final int OFFSET_LENGTH = 1;
+    private static final int OFFSET_NULL = 2;
+    private static final byte NULL = 0x00;
+    private static final int OFFSET_CMD = 3;
+    private static final int OFFSET_PAYLOAD = 4;
+    private static final int CRC_LEN = 2;
+    private static final int HEADER_LEN = 4;
+    private ArrayList<Byte> packet;
+    private int command;
+    private ArrayList<Byte> payload;
 
     public PacketBuilder(int command) {
         this.command = command;
@@ -74,7 +74,7 @@ public class PacketBuilder {
         return (byte) packetSize;
     }
 
-    public byte[] toBytes() {
+    private byte[] toBytes() {
         byte[] b = new byte[this.packet.size()];
         for (int i = 0; i < this.packet.size(); i++) {
             b[i] = this.packet.get(i).byteValue();
@@ -82,7 +82,7 @@ public class PacketBuilder {
         return b;
     }
 
-    public List<byte[]> toBytesList() {
+    private List<byte[]> toBytesList() {
         List<byte[]> byteMessages = new ArrayList<byte[]>();
         double totalPacketSize = packet.size();
         int messages =(int) Math.ceil(totalPacketSize/18);

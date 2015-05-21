@@ -4,7 +4,7 @@ import android.os.Environment;
 
 import java.io.File;
 
-public class FileUtils {
+class FileUtils {
 
 	public static boolean makeSureDirectoryExists( final String dir ) {
 		final File file = new File( dir );
@@ -12,11 +12,8 @@ public class FileUtils {
 	}
 
 	public static String getExternalDir() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append( Environment.getExternalStorageDirectory().getAbsolutePath() );
-		sb.append( "/xdrip" );
 
-		final String dir = sb.toString();
+		final String dir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/xdrip";
 		return dir;
 	}
 

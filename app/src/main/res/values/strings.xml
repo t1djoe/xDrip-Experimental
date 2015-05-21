@@ -4,11 +4,7 @@
     <string name="pref_I_understand_title"> I UNDERSTAND AND AGREE</string>
     <string name="pref_I_understand_summery">xDrip MUST NOT BE USED TO MAKE MEDICAL DECISIONS. THERE IS NO WARRANTY FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE PROGRAM “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE PROGRAM IS WITH YOU. SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION. </string>
     <string name="app_name">xDrip</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_bluetooth_scan">BluetoothScan</string>
-    <string name="connected">Connected</string>
-    <string name="disconnected">Disconnected</string>
     <string name="menu_scan">Scan</string>
     <string name="menu_stop">Stop</string>
     <string name="menu_refresh">Refresh</string>
@@ -16,40 +12,14 @@
     <string name="error_bluetooth_not_supported">Error: Bluetooth not supported by this device</string>
     <string name="unknown_device">Unrecognized Device</string>
     <string name="connecting_to_device">Connecting to device</string>
-    <string name="title_activity_raw_data_table">RawDataTable</string>
-    <string name="title_activity_calculated_data_table">CalculatedDataTable</string>
-    <string name="title_activity_add_calibration">AddCalibration</string>
-    <string name="title_activity_start_new_sensor">StartNewSensor</string>
-    <string name="title_activity_stop_sensor">StopSensor</string>
-    <string name="title_activity_nav_drawer">NavDrawer</string>
-    <string name="title_section1">Home</string>
-    <string name="title_section2">Add Calibration</string>
-    <string name="title_section3">Start Sensor</string>
-    <string name="title_section4">Stop Sensor</string>
-    <string name="title_section5">Scan for BT</string>
-    <string name="title_section6">Raw Data Table</string>
-    <string name="title_section7">Calibration Table</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_license_agreement">End User License Agreement</string>
-    <string name="action_example">Example action</string>
     <string name="title_activity_calibration_check_in">CalibrationCheckInActivity</string>
     <string name="title_activity_usb_connected">UsbConnectedActivity</string>
     <string name="snooze">Snooze</string>
-    <string name="snooze_hint">Snooze alert for x minutes</string>
+    <string name="pref_ringtone_silent">none</string>
 
-    <string-array name="menu_options">
-        <item>Dex Drip</item>
-        <item>Enter Calibration</item>
-        <item>Calculated Data Table</item>
-        <item>Raw Data Table</item>
-        <item>Calibration Table</item>
-        <item>Start Sensor</item>
-        <item>Stop Sensor</item>
-        <item>Scan for BT</item>
-    </string-array>
-
-    <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_calibration_data_table">CalibrationDataTable</string>
     <string name="title_activity_fake_numbers">FakeNumbers</string>
     <string name="title_activity_edit_alert">EditAlert</string>
@@ -57,13 +27,10 @@
     <string name="title_activity_double_calibration">DoubleCalibrationActivity</string>
     <string name="title_activity_calibration_override">CalibrationOverride</string>
     <string name="title_activity_calibration_graph">CalibrationGraph</string>
-    <string name="pref_header_cloud_storage">Cloud Storage</string>
 
     <!-- MongoDB Settings -->
     <string name="pref_title_mongodb">MongoDB</string>
-    <string name="pref_title_mongo_enabled">Enabled</string>
     <string name="pref_summary_mongodb_enabled">If you\'re using MongoLab and Azure this should be enabled</string>
-    <string name="pref_title_mongodb_uri">URI</string>
     <string name="pref_dialog_mongodb_uri">Enter MongoDB URI"</string>
     <string name="pref_message_mongodb_uri">Replace example values in {}\'s with your correct values</string>
     <string name="pref_default_mongodb_uri">mongodb://{user}:{password}@{host}.mongolab.com:{11111}/{database}</string>
@@ -91,12 +58,9 @@
     <!-- broadcast settings -->
     <string name="pref_title_broadcast_enabled">Broadcast locally</string>
     <string name="pref_summary_broadcast_enabled">Enable local broadcast of data so other apps (eg. NightWatch) can listen on new values</string>
-    <string name="title_activity_share_test">ShareTest</string>
     <string name="title_activity_system_status">SystemStatus</string>
 
     <string name="toast_crash">Something went wrong :( a report has been sent to help fix the issue.</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
     <string name="title_activity_alert_list">AlertList</string>
 
 </resources>

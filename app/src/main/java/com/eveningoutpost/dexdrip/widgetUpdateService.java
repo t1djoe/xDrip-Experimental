@@ -4,28 +4,19 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
-import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.ReadDataShare;
-import com.eveningoutpost.dexdrip.Models.BgReading;
-import com.eveningoutpost.dexdrip.Services.DexShareCollectionService;
-import com.eveningoutpost.dexdrip.UtilityModels.CollectionServiceStarter;
-import com.eveningoutpost.dexdrip.UtilityModels.Intents;
-
 import java.util.Calendar;
-import java.util.Date;
 
 public class widgetUpdateService extends Service {
-    public String TAG = "widgetUpdateService";
-    BroadcastReceiver _broadcastReceiver;
+    private String TAG = "widgetUpdateService";
+    private BroadcastReceiver _broadcastReceiver;
     public widgetUpdateService() {}
 
     @Override
@@ -61,7 +52,7 @@ public class widgetUpdateService extends Service {
         }
     }
 
-    public void setFailoverTimer() { //Keep it alive!
+    private void setFailoverTimer() { //Keep it alive!
         if(AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), xDripWidget.class)).length > 0) {
             long retry_in = (1000 * 60 * 5);
             Log.d(TAG, "Fallover Restarting in: " + (retry_in / (60 * 1000)) + " minutes");
@@ -73,7 +64,7 @@ public class widgetUpdateService extends Service {
         }
     }
 
-    public void updateCurrentBgInfo() {
+    private void updateCurrentBgInfo() {
         Log.d(TAG, "Sending update flag to widget");
         int ids[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), xDripWidget.class));
         Log.d(TAG, "Updating " + ids.length + " widgets");

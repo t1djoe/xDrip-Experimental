@@ -1,10 +1,5 @@
 package com.eveningoutpost.dexdrip.ImportedLibraries.dexcom;
 
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
-import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbDeviceConnection;
 import android.util.Log;
 
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.CalRecord;
@@ -13,16 +8,11 @@ import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.GenericXMLRec
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.MeterRecord;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.PageHeader;
 import com.eveningoutpost.dexdrip.ImportedLibraries.dexcom.records.SensorRecord;
-import com.eveningoutpost.dexdrip.ImportedLibraries.usbserial.driver.UsbSerialDriver;
-import com.eveningoutpost.dexdrip.Services.DexCollectionService;
 import com.eveningoutpost.dexdrip.Services.DexShareCollectionService;
-import com.eveningoutpost.dexdrip.ShareTest;
 
 import org.w3c.dom.Element;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -38,13 +28,9 @@ import rx.functions.Action1;
 // Some of this code may have been modified for use in this project
 
 public class ReadDataShare {
-    byte[] accumulatedResponse;
-    private ShareTest mShareTest;
+    private byte[] accumulatedResponse;
     private DexShareCollectionService mCollectionService;
 
-    public ReadDataShare(ShareTest aShareTest){
-        mShareTest = aShareTest;
-    }
     public ReadDataShare(DexShareCollectionService collectionService){
         mCollectionService = collectionService;
     }
@@ -221,14 +207,12 @@ public class ReadDataShare {
 
     private void writeCommand(int command, ArrayList<Byte> payload, Action1<byte[]> responseListener) {
         List<byte[]> packets = new PacketBuilder(command, payload).composeList();
-        if(mShareTest != null) { mShareTest.writeCommand(packets, 0, responseListener); }
-        else if (mCollectionService != null) { mCollectionService.writeCommand(packets, 0, responseListener); }
+        if(mCollectionService != null) { mCollectionService.writeCommand(packets, 0, responseListener); }
     }
 
     private void writeCommand(int command, Action1<byte[]> responseListener) {
         List<byte[]> packets = new PacketBuilder(command).composeList();
-        if(mShareTest != null) { mShareTest.writeCommand(packets, 0, responseListener); }
-        else if (mCollectionService != null) { mCollectionService.writeCommand(packets, 0, responseListener); }
+        if(mCollectionService != null) { mCollectionService.writeCommand(packets, 0, responseListener); }
     }
 
     private ReadPacket read(int numOfBytes, byte[] readPacket) {

@@ -9,12 +9,12 @@ import java.util.List;
 /**
  * Created by stephenblack on 3/19/15.
  */
-public class ShareUploadPayload {
+class ShareUploadPayload {
     @Expose
-    public String SN;
+    private String SN;
 
     @Expose
-    public Egv[] Egvs;
+    private Egv[] Egvs;
 
     @Expose
     public long TA = -5;

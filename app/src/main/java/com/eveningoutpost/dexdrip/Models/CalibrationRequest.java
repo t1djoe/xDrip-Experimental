@@ -19,10 +19,10 @@ public class CalibrationRequest extends Model {
     private static final int min = 70;
 
     @Column(name = "requestIfAbove")
-    public double requestIfAbove;
+    private double requestIfAbove;
 
    @Column(name = "requestIfBelow")
-    public double requestIfBelow;
+   private double requestIfBelow;
 
     public static void createRange(double low, double high) {
         CalibrationRequest calibrationRequest = new CalibrationRequest();

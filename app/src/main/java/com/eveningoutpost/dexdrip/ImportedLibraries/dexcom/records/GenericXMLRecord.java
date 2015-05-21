@@ -8,7 +8,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.Serializable;
+
 import java.io.StringReader;
 import java.util.Arrays;
 
@@ -17,8 +17,8 @@ import java.util.Arrays;
 // Some of this code may have been modified for use in this project
 
 public class GenericXMLRecord extends GenericTimestampRecord {
-    int XML_START = 8;
-    int XML_END = 241;
+    private int XML_START = 8;
+    private int XML_END = 241;
 
     private final String TAG = GenericXMLRecord.class.getSimpleName();
 

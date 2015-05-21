@@ -27,7 +27,7 @@ public class WixelReader  extends Thread {
     private final static String TAG = WixelReader.class.getName();
     private static WixelReader singleton;
 
-    public synchronized static WixelReader getInstance(Context ctx) {
+    private synchronized static WixelReader getInstance(Context ctx) {
         if(singleton == null) {
            singleton = new WixelReader(ctx);
         }
@@ -87,7 +87,7 @@ public class WixelReader  extends Thread {
     }
 
  // last in the array, is first in time
-    public static List<TransmitterRawData> Merge2Lists(List<TransmitterRawData> list1 , List<TransmitterRawData> list2)
+    private static List<TransmitterRawData> Merge2Lists(List<TransmitterRawData> list1, List<TransmitterRawData> list2)
     {
         List<TransmitterRawData> merged = new LinkedList <TransmitterRawData>();
         while (true) {
@@ -117,7 +117,7 @@ public class WixelReader  extends Thread {
         return merged;
     }
 
-    public static List<TransmitterRawData> MergeLists(List <List<TransmitterRawData>> allTransmitterRawData)
+    private static List<TransmitterRawData> MergeLists(List<List<TransmitterRawData>> allTransmitterRawData)
     {
         List<TransmitterRawData> MergedList;
         MergedList = allTransmitterRawData.remove(0);
@@ -128,7 +128,7 @@ public class WixelReader  extends Thread {
         return MergedList;
     }
 
-    public static List<TransmitterRawData> ReadHost(String hostAndIp, int numberOfRecords)
+    private static List<TransmitterRawData> ReadHost(String hostAndIp, int numberOfRecords)
     {
         int port;
         System.out.println("Reading From " + hostAndIp);
@@ -169,7 +169,7 @@ public class WixelReader  extends Thread {
         return ret;
     }
 
-    public static List<TransmitterRawData> ReadFromMongo(String dbury, int numberOfRecords)
+    private static List<TransmitterRawData> ReadFromMongo(String dbury, int numberOfRecords)
     {
         Log.i(TAG,"Reading From " + dbury);
     	List<TransmitterRawData> tmpList;
@@ -199,7 +199,7 @@ public class WixelReader  extends Thread {
     }
 
     // format of string is ip1:port1,ip2:port2;
-    public static TransmitterRawData[] Read(String hostsNames, int numberOfRecords)
+    private static TransmitterRawData[] Read(String hostsNames, int numberOfRecords)
     {
         String []hosts = hostsNames.split(",");
         if(hosts.length == 0) {
@@ -242,7 +242,7 @@ public class WixelReader  extends Thread {
 
     }
 
-    public static List<TransmitterRawData> Read(String hostName,int port, int numberOfRecords)
+    private static List<TransmitterRawData> Read(String hostName, int port, int numberOfRecords)
     {
         List<TransmitterRawData> trd_list = new LinkedList<TransmitterRawData>();
         try
@@ -385,12 +385,12 @@ public class WixelReader  extends Thread {
         }
     }
 
-    public void Stop()
+    private void Stop()
     {
         mStop = true;
         interrupt();
     }
-    public void setSerialDataToTransmitterRawData(int raw_data, int filtered_data ,int sensor_battery_leve, Long CaptureTime) {
+    private void setSerialDataToTransmitterRawData(int raw_data, int filtered_data, int sensor_battery_leve, Long CaptureTime) {
 
         TransmitterData transmitterData = TransmitterData.create(raw_data, sensor_battery_leve, CaptureTime);
         if (transmitterData != null) {

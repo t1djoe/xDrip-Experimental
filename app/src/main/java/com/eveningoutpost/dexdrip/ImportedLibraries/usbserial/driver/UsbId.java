@@ -29,7 +29,7 @@ package com.eveningoutpost.dexdrip.ImportedLibraries.usbserial.driver;
  *
  * @author mike wakerly (opensource@hoho.com)
  */
-public final class UsbId {
+final class UsbId {
 
     public static final int VENDOR_FTDI = 0x0403;
     public static final int FTDI_FT232R = 0x6001;

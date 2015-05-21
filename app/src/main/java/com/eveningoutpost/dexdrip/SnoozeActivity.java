@@ -1,14 +1,10 @@
 package com.eveningoutpost.dexdrip;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,15 +12,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.NumberPicker;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.eveningoutpost.dexdrip.Models.ActiveBgAlert;
 import com.eveningoutpost.dexdrip.Models.AlertType;
@@ -33,18 +23,18 @@ import com.eveningoutpost.dexdrip.UtilityModels.BgGraphBuilder;
 
 
 public class SnoozeActivity extends Activity {
-    TextView alertStatus;
-    Button buttonSnooze;
-    Button disableAlerts;
-    Button clearDisabled;
-    SharedPreferences prefs;
-    boolean doMgdl;
+    private TextView alertStatus;
+    private Button buttonSnooze;
+    private Button disableAlerts;
+    private Button clearDisabled;
+    private SharedPreferences prefs;
+    private boolean doMgdl;
 
-    NumberPicker snoozeValue;
+    private NumberPicker snoozeValue;
 
-    static final int snoozeValues[] = new int []{5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 75, 90, 105, 120, 150, 180, 240, 300, 360, 420, 480, 540, 600};
+    private static final int[] snoozeValues = new int []{5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 75, 90, 105, 120, 150, 180, 240, 300, 360, 420, 480, 540, 600};
 
-    static int getSnoozeLocatoin(int time) {
+    private static int getSnoozeLocatoin(int time) {
         for (int i=0; i < snoozeValues.length; i++) {
             if(time == snoozeValues[i]) {
                 return i;
@@ -59,7 +49,7 @@ public class SnoozeActivity extends Activity {
         return snoozeValues.length-1;
     }
 
-    static String getNameFromTime(int time) {
+    private static String getNameFromTime(int time) {
         if (time < 120) {
             return time + " minutes";
         }
@@ -116,7 +106,7 @@ public class SnoozeActivity extends Activity {
         displayStatus();
     }
 
-    public void addListenerOnButton() {
+    private void addListenerOnButton() {
         buttonSnooze = (Button)findViewById(R.id.button_snooze);
         disableAlerts = (Button)findViewById(R.id.button_disable_alerts);
         clearDisabled = (Button)findViewById(R.id.enable_alerts);
@@ -173,7 +163,7 @@ public class SnoozeActivity extends Activity {
         });
     }
 
-    public void showDisableEnableButtons() {
+    private void showDisableEnableButtons() {
         if(prefs.getLong("alerts_disabled_until", 0) > new Date().getTime()){
             disableAlerts.setVisibility(View.GONE);
             clearDisabled.setVisibility(View.VISIBLE);
@@ -184,7 +174,7 @@ public class SnoozeActivity extends Activity {
     }
 
 
-    void displayStatus() {
+    private void displayStatus() {
         ActiveBgAlert aba = ActiveBgAlert.getOnly();
         AlertType activeBgAlert = ActiveBgAlert.alertTypegetOnly();
 

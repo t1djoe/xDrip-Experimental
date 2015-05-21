@@ -6,19 +6,16 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.eveningoutpost.dexdrip.Models.Calibration;
 import com.eveningoutpost.dexdrip.UtilityModels.CollectionServiceStarter;
 
 
 public class DoubleCalibrationActivity  extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-    Button button;
+    private Button button;
     private String menu_name = "Add Double Calibration";
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -46,7 +43,7 @@ public class DoubleCalibrationActivity  extends Activity implements NavigationDr
         mNavigationDrawerFragment.swapContext(position);
     }
 
-    public void addListenerOnButton() {
+    private void addListenerOnButton() {
 
         button = (Button) findViewById(R.id.save_calibration_button);
 

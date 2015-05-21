@@ -29,7 +29,7 @@ public class RestCalls {
     private static final String baseUrl = "http://10.0.2.2:3000";
 
 
-    public static Gson gson = new GsonBuilder()
+    private static Gson gson = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .registerTypeAdapter(Date.class, new DateTypeAdapter())
             .create();
@@ -64,7 +64,7 @@ public class RestCalls {
         bgReadingInterface().updateReading(user.uuid, bgSendQueue.bgReading.uuid, bgSendQueue.bgReading, new Callback<Gson>() {
                     @Override
                     public void success(Gson gsonResponse, Response response) {
-                        Log.w("REST CALL Update Success!:", "****************");
+                        Log.w("REST CALL:", "Success");
                         bgSendQueue.success = true;
                         bgSendQueue.save();
                     }
@@ -123,14 +123,14 @@ public class RestCalls {
         );
     }
 
-    public static BgReadingInterface bgReadingInterface() {
+    private static BgReadingInterface bgReadingInterface() {
         RestAdapter adapter = adapterBuilder().build();
             BgReadingInterface bgReadingInterface =
                 adapter.create(BgReadingInterface.class);
         return bgReadingInterface;
     }
 
-    public static SensorInterface sensorInterface() {
+    private static SensorInterface sensorInterface() {
 
         RestAdapter adapter = adapterBuilder().build();
         SensorInterface sensorInterface =
@@ -138,14 +138,14 @@ public class RestCalls {
         return sensorInterface;
     }
 
-    public static CalibrationInterface calibrationInterface() {
+    private static CalibrationInterface calibrationInterface() {
         RestAdapter adapter = adapterBuilder().build();
         CalibrationInterface calibrationInterface =
                 adapter.create(CalibrationInterface.class);
         return calibrationInterface;
     }
 
-    public static RestAdapter.Builder adapterBuilder() {
+    private static RestAdapter.Builder adapterBuilder() {
         RestAdapter.Builder adapterBuilder = new RestAdapter.Builder();
         adapterBuilder
                 .setEndpoint(baseUrl)
@@ -154,7 +154,7 @@ public class RestCalls {
         return adapterBuilder;
     }
 
-    public static RequestInterceptor requestInterceptor(){
+    private static RequestInterceptor requestInterceptor(){
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
             User currentUser = User.currentUser();
             @Override

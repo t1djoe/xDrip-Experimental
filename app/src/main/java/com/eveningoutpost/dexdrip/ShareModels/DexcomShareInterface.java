@@ -11,7 +11,7 @@ import retrofit.http.QueryMap;
 /**
  * Created by stephenblack on 3/16/15.
  */
-public interface DexcomShareInterface {
+interface DexcomShareInterface {
     @POST("/Publisher/ReadPublisherLatestGlucoseValues")
     ShareGlucose[] getShareBg(@QueryMap Map<String, String> options);
 
