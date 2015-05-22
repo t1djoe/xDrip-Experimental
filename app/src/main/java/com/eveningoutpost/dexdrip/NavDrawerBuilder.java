@@ -51,7 +51,6 @@ public class NavDrawerBuilder {
         }
         options.add("BG Data Table");
         options.add("Calibration Data Table");
-//        options.add("Sensor Data Table");
 
         if(is_active_sensor) {
             if(!CollectionServiceStarter.isBTShare(context)) {
@@ -106,7 +105,6 @@ public class NavDrawerBuilder {
         }
         options.add(new Intent(context, BgReadingTable.class));
         options.add(new Intent(context, CalibrationDataTable.class));
-//        options.add(new Intent(context, SensorDataTable.class));
 
 
         if(is_active_sensor) {

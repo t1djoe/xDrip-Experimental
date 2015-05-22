@@ -60,14 +60,5 @@ public class FakeNumbers extends Activity {
 
             }
         });
-
-        button = (Button)findViewById(R.id.StartTestAlerts);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                AlertType.testAll(getApplicationContext());
-                BgReading.TestgetUnclearTimes();
-
-            }
-        });
     }
 }
