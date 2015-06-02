@@ -7,6 +7,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.google.gson.annotations.Expose;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -21,9 +22,11 @@ import java.util.UUID;
 public class TransmitterData extends Model {
     private final static String TAG = TransmitterData.class.getSimpleName();
 
+    @Expose
     @Column(name = "timestamp", index = true)
     public long timestamp;
 
+    @Expose
     @Column(name = "raw_data")
     public double raw_data;
 
@@ -33,8 +36,32 @@ public class TransmitterData extends Model {
     @Column(name = "sensor_battery_level")
     public int sensor_battery_level;
 
+    @Expose
+    @Column(name = "transmitter_id")
+    public String transmitter_id;
+
     @Column(name = "uuid", index = true)
     public String uuid;
+
+    public static TransmitterData createWithId(byte[] buffer, int len, Long timestamp) {
+        if (len < 6) { return null; }
+        TransmitterData transmitterData = new TransmitterData();
+        Log.w(TAG, "create Processing a BTWixel or IPWixel packet");
+        StringBuilder data_string = new StringBuilder();
+        for (int i = 0; i < len; ++i) { data_string.append((char) buffer[i]); }
+        String[] data = data_string.toString().split("\\s+");
+        Log.w(TAG, "Data String: " + data_string.toString());
+        if(data.length < 2) { return null; };
+        if (Integer.parseInt(data[1]) < 1000) { return null; }
+        transmitterData.raw_data = Integer.parseInt(data[1]);
+        transmitterData.filtered_data = Integer.parseInt(data[1]);
+        transmitterData.transmitter_id = data[0];
+        transmitterData.timestamp = timestamp;
+        transmitterData.uuid = UUID.randomUUID().toString();
+
+        transmitterData.save();
+        return transmitterData;
+    }
 
     public static TransmitterData create(byte[] buffer, int len, Long timestamp) {
         if (len < 6) { return null; }

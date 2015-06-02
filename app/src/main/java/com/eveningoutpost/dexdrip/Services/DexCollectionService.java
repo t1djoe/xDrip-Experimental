@@ -38,6 +38,7 @@ import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.eveningoutpost.dexdrip.DMineDemo.DMineDemoRest;
 import com.eveningoutpost.dexdrip.Models.ActiveBluetoothDevice;
 import com.eveningoutpost.dexdrip.Models.BgReading;
 import com.eveningoutpost.dexdrip.Sensor;
@@ -164,7 +165,7 @@ public class DexCollectionService extends Service {
 
     public void setFailoverTimer() {
         if (CollectionServiceStarter.isBTWixel(getApplicationContext())|| CollectionServiceStarter.isDexbridgeWixel(getApplicationContext())) {
-            long retry_in = (1000 * 60 * 6);
+            long retry_in = (1000 * 60 * 7);
             Log.d(TAG, "setFailoverTimer: Fallover Restarting in: " + (retry_in / (60 * 1000)) + " minutes");
             Calendar calendar = Calendar.getInstance();
             AlarmManager alarm = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -351,84 +352,13 @@ public class DexCollectionService extends Service {
 
     public void setSerialDataToTransmitterRawData(byte[] buffer, int len) {
         long timestamp = new Date().getTime();
-        if (CollectionServiceStarter.isDexbridgeWixel(getApplicationContext())) {
-            Log.w(TAG, "setSerialDataToTransmitterRawData: Dealing with Dexbridge packet!");
-            int DexSrc;
-            int TransmitterID;
-            String TxId;
-            Calendar c = Calendar.getInstance();
-            long secondsNow = c.getTimeInMillis();
-            ByteBuffer tmpBuffer = ByteBuffer.allocate(len);
-            tmpBuffer.order(ByteOrder.LITTLE_ENDIAN);
-            tmpBuffer.put(buffer, 0, len);
-            ByteBuffer txidMessage = ByteBuffer.allocate(6);
-            txidMessage.order(ByteOrder.LITTLE_ENDIAN);
-            if (buffer[0] == 0x07 && buffer[1] == -15) {
-                //We have a Beacon packet.  Get the TXID value and compare with dex_txid
-                Log.w(TAG, "setSerialDataToTransmitterRawData: Received Beacon packet.");
-                //DexSrc starts at Byte 2 of a Beacon packet.
-                DexSrc = tmpBuffer.getInt(2);
-                TxId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("dex_txid", "00000");
-                TransmitterID = convertSrc(TxId);
-                if (TxId.compareTo("00000") != 0 && Integer.compare(DexSrc, TransmitterID) != 0) {
-                    Log.w(TAG, "setSerialDataToTransmitterRawData: TXID wrong.  Expected " + TransmitterID + " but got " + DexSrc);
-                    txidMessage.put(0, (byte) 0x06);
-                    txidMessage.put(1, (byte) 0x01);
-                    txidMessage.putInt(2, TransmitterID);
-                    sendBtMessage(txidMessage);
-                }
-                return;
-            }
-            if (buffer[0] == 0x11 && buffer[1] == 0x00) {
-                //we have a data packet.  Check to see if the TXID is what we are expecting.
-                Log.w(TAG, "setSerialDataToTransmitterRawData: Received Data packet");
-                //make sure we are not processing a packet we already have
-                if (secondsNow - lastPacketTime < 60000) {
-                    Log.v(TAG, "setSerialDataToTransmitterRawData: Received Duplicate Packet.  Exiting.");
-                    return;
-                } else {
-                    lastPacketTime = secondsNow;
-                }
-                if (len >= 0x11) {
-                    //DexSrc starts at Byte 12 of a data packet.
-                    DexSrc = tmpBuffer.getInt(12);
-                    TxId = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("dex_txid", "00000");
-                    TransmitterID = convertSrc(TxId);
-                    if (Integer.compare(DexSrc, TransmitterID) != 0) {
-                        Log.w(TAG, "TXID wrong.  Expected " + TransmitterID + " but got " + DexSrc);
-                        txidMessage.put(0, (byte) 0x06);
-                        txidMessage.put(1, (byte) 0x01);
-                        txidMessage.putInt(2, TransmitterID);
-                        sendBtMessage(txidMessage);
-                    }
-                    PreferenceManager.getDefaultSharedPreferences(mContext).edit().putInt("bridge_battery", ByteBuffer.wrap(buffer).get(11)).apply();
-                    //All is OK, so process it.
-                    //first, tell the wixel it is OK to sleep.
-                    Log.d(TAG, "setSerialDataToTransmitterRawData: Sending Data packet Ack, to put wixel to sleep");
-                    ByteBuffer ackMessage = ByteBuffer.allocate(2);
-                    ackMessage.put(0, (byte) 0x02);
-                    ackMessage.put(1, (byte) 0xF0);
-                    sendBtMessage(ackMessage);
-                    Log.v(TAG, "setSerialDataToTransmitterRawData: Creating TransmitterData at " + timestamp);
-                    ProcessNewTransmitterData(TransmitterData.create(buffer, len, timestamp), timestamp);
-                }
-            }
-        } else {
-            ProcessNewTransmitterData(TransmitterData.create(buffer, len, timestamp), timestamp);
-        }
+        ProcessNewTransmitterDemoData(TransmitterData.createWithId(buffer, len, timestamp), timestamp);
     }
 
-    private void ProcessNewTransmitterData(TransmitterData transmitterData, long timestamp) {
+    private void ProcessNewTransmitterDemoData(TransmitterData transmitterData, long timestamp) {
         if (transmitterData != null) {
-            Sensor sensor = Sensor.currentSensor();
-            if (sensor != null) {
-                sensor.latest_battery_level = transmitterData.sensor_battery_level;
-                sensor.save();
-
-                BgReading.create(transmitterData.raw_data, transmitterData.filtered_data, this, timestamp);
-            } else {
-                Log.w(TAG, "setSerialDataToTransmitterRawData: No Active Sensor, Data only stored in Transmitter Data");
-            }
+            DMineDemoRest dMineDemoRest = new DMineDemoRest();
+            dMineDemoRest.postData(transmitterData);
         }
     }
 }
