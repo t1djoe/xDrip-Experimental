@@ -75,8 +75,8 @@ public class DMineDemoRest {
         RestAdapter.Builder adapterBuilder = new RestAdapter.Builder();
         adapterBuilder
                 .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog("RESTDEMO"))
-//                .setEndpoint("http://xdrip-demo.herokuapp.com")
-                .setEndpoint("http://192.168.0.20:3000")
+                .setEndpoint("http://xdrip-demo.herokuapp.com")
+//                .setEndpoint("http://192.168.0.20:3000")
                 .setRequestInterceptor(interceptor)
                 .setConverter(new GsonConverter(new GsonBuilder()
                         .excludeFieldsWithoutExposeAnnotation()
