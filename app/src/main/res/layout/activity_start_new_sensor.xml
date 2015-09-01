@@ -48,6 +48,68 @@
                     android:gravity="center_horizontal"
                     android:textSize="15sp" />
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/sensor_location_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="Enter other location (needed for algorithm improvment)."
+                        android:textSize="15sp"/>
+
+
+
+                    <RadioGroup 
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView"
+                        android:id="@+id/myRadioGroup"
+                        android:checkedButton="@+id/sensor_location_private" >
+
+                        <RadioButton 
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/sensor_location_private"
+                            android:text="private" />
+                        
+                        <RadioButton 
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/sensor_location_hand"
+                            android:text="hand" />
+
+                        <RadioButton 
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/sensor_location_bottom"
+                            android:text="bottom" />
+				        
+                        <RadioButton 
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/sensor_location_other"
+                            android:text="other" />
+                    </RadioGroup>
+
+                    <EditText
+                        android:id="@+id/edit_sensor_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:ems="10"
+                        android:autoText="false"
+                        android:text=""
+                        android:singleLine="true"
+                        android:textAlignment="center"
+                        android:textSize="15sp"
+                        android:layout_alignParentStart="true" />
+                </LinearLayout>
+
+                
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

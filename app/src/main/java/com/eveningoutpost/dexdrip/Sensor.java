@@ -1,6 +1,7 @@
 package com.eveningoutpost.dexdrip;
 
 import android.provider.BaseColumns;
+import android.preference.ListPreference;
 import android.util.Log;
 
 import com.activeandroid.Model;
@@ -33,11 +34,16 @@ public class Sensor extends Model {
 //    @Expose
     @Column(name = "uuid", index = true)
     public String uuid;
+    
+//  @Expose
+  @Column(name = "sensor_location")
+  public String sensor_location;
 
-    public static Sensor create(long started_at) {
+    public static Sensor create(long started_at, String sensor_location) {
         Sensor sensor = new Sensor();
         sensor.started_at = started_at;
         sensor.uuid = UUID.randomUUID().toString();
+        sensor.sensor_location = sensor_location;
         sensor.save();
         SensorSendQueue.addToQueue(sensor);
         Log.w("SENSOR MODEL:", sensor.toString());

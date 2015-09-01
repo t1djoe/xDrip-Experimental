@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -22,9 +25,11 @@ import java.util.List;
 
 public class StartNewSensor extends ActivityWithMenu {
     public static String menu_name = "Start Sensor";
-    public Button button;
-    public DatePicker dp;
-    public TimePicker tp;
+    private Button button;
+    private DatePicker dp;
+    private TimePicker tp;
+    private RadioGroup radioGroup;
+    private EditText sensor_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,8 @@ public class StartNewSensor extends ActivityWithMenu {
             button = (Button)findViewById(R.id.startNewSensor);
             dp = (DatePicker)findViewById(R.id.datePicker);
             tp = (TimePicker)findViewById(R.id.timePicker);
+            sensor_location = (EditText) findViewById(R.id.edit_sensor_location);
+            sensor_location.setEnabled(false);
             addListenerOnButton();
         } else {
             Intent intent = new Intent(this, StopSensor.class);
@@ -59,7 +66,20 @@ public class StartNewSensor extends ActivityWithMenu {
               tp.getCurrentHour(), tp.getCurrentMinute(), 0);
               long startTime = calendar.getTime().getTime();
 
-              Sensor sensor = Sensor.create(startTime);
+              
+              int selectedId = radioGroup.getCheckedRadioButtonId();
+              String location = new String();
+              if(selectedId == R.id.sensor_location_private) {
+                  location = "private";
+              } else if(selectedId == R.id.sensor_location_hand) {
+                  location = "hand";
+              } else if (selectedId == R.id.sensor_location_bottom) {
+                  location = "bottom";
+              } else if (selectedId == R.id.sensor_location_other) {
+                  location = sensor_location.getText().toString();
+              }
+              
+              Sensor.create(startTime, location);
               Log.w("NEW SENSOR", "Sensor started at " + startTime);
 
               Toast.makeText(getApplicationContext(), "NEW SENSOR STARTED", Toast.LENGTH_LONG).show();
@@ -70,5 +90,22 @@ public class StartNewSensor extends ActivityWithMenu {
           }
 
         });
+        
+        radioGroup = (RadioGroup) findViewById(R.id.myRadioGroup);
+        
+        radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.sensor_location_other) {
+                    sensor_location.setEnabled(true);
+                    sensor_location.requestFocus();
+                } else {
+                    sensor_location.setEnabled(false);
+                }
+            }
+            
+        });
+        
     }
 }
