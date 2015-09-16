@@ -9,6 +9,7 @@ import com.eveningoutpost.dexdrip.Models.BgReading;
 import com.eveningoutpost.dexdrip.Models.Calibration;
 import com.eveningoutpost.dexdrip.Tables.BgReadingTable;
 import com.eveningoutpost.dexdrip.Tables.CalibrationDataTable;
+import com.eveningoutpost.dexdrip.Tables.TreatmentDataTable;
 import com.eveningoutpost.dexdrip.UtilityModels.CollectionServiceStarter;
 import com.eveningoutpost.dexdrip.stats.StatsActivity;
 import com.eveningoutpost.dexdrip.utils.Preferences;
@@ -52,6 +53,8 @@ public class NavDrawerBuilder {
             this.nav_drawer_intents.add(new Intent(context, BgReadingTable.class));
             this.nav_drawer_options.add("Calibration Data Table");
             this.nav_drawer_intents.add(new Intent(context, CalibrationDataTable.class));
+            this.nav_drawer_options.add("Treatment Data Table");
+            this.nav_drawer_intents.add(new Intent(context, TreatmentDataTable.class));
         }
 
         if(is_active_sensor) {
