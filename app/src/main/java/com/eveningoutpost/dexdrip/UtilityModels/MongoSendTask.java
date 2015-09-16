@@ -6,6 +6,7 @@ import com.eveningoutpost.dexdrip.Models.UserError.Log;
 
 import com.eveningoutpost.dexdrip.Models.BgReading;
 import com.eveningoutpost.dexdrip.Models.Calibration;
+import com.eveningoutpost.dexdrip.Models.Treatments;
 import com.eveningoutpost.dexdrip.Services.SyncService;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class MongoSendTask extends AsyncTask<String, Void, SyncService> {
         private Context context;
         public List<BgSendQueue> bgsQueue = new ArrayList<BgSendQueue>();
         public List<CalibrationSendQueue> calibrationsQueue = new ArrayList<CalibrationSendQueue>();
+        public List<TreatmentSendQueue> treatmentsQueue = new ArrayList<TreatmentSendQueue>();
 
         private Exception exception;
 
@@ -27,6 +29,11 @@ public class MongoSendTask extends AsyncTask<String, Void, SyncService> {
         }
         public MongoSendTask(Context pContext, CalibrationSendQueue calibrationSendQueue) {
             calibrationsQueue.add(calibrationSendQueue);
+            context = pContext;
+        }
+        public MongoSendTask(Context pContext, TreatmentSendQueue treatmentSendQueue) {
+            Log.w("treatmentsQueue", "MESSAGE");
+            treatmentsQueue.add(treatmentSendQueue);
             context = pContext;
         }
         public MongoSendTask(Context pContext) {
@@ -45,6 +52,9 @@ public class MongoSendTask extends AsyncTask<String, Void, SyncService> {
                 for (BgSendQueue job : bgsQueue) {
                     bgReadings.add(job.bgReading);
                 }
+                for (TreatmentSendQueue job : treatmentsQueue) {
+                    treatments.add(job.treatment);
+                }
 
                 if(bgReadings.size() + calibrations.size() > 0) {
                     NightscoutUploader uploader = new NightscoutUploader(context);
@@ -55,6 +65,9 @@ public class MongoSendTask extends AsyncTask<String, Void, SyncService> {
                         }
                         for (BgSendQueue bgReading : bgsQueue) {
                             bgReading.markMongoSuccess();
+                        }
+                        for (TreatmentSendQueue treatQueue : treatmentsQueue) {
+                            treatQueue.markMongoSuccess();
                         }
                     }
                 }
