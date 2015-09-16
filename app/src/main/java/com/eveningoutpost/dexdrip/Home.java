@@ -346,6 +346,12 @@ public class Home extends ActivityWithMenu {
         displayCurrentInfo();
     }
 
+    public void addTreatment(View view) {
+        Log.w("Adding treatment", "MESSAGE");
+        Intent myIntent = new Intent(this, AddTreatment.class);
+        startActivity(myIntent);
+    }
+
     public void displayCurrentInfo() {
         DecimalFormat df = new DecimalFormat("#");
         df.setMaximumFractionDigits(0);
